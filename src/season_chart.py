@@ -36,7 +36,6 @@ def create_fig(df, selected_poolers=None):
     for i, r in df[df['x']==max_day].sort_values(['selected', 'y'], ascending=True).iterrows():
         # Get data for the specific pooler_name
         pooler_name = r["pooler_name"]
-        print(pooler_name)
         df_pooler = df[df['pooler_name'] == pooler_name]
 
         if r["selected"]:
