@@ -35,7 +35,7 @@ def create_fig(df, position, selected_poolers=None, showticklabels=False):
         df['selected'] = True
 
     fig_width = 800
-    fig_height = 75
+    fig_height = 90 if showticklabels else 60
     layout = Layout(
         plot_bgcolor='rgba(255,255,255,1)',
         width=fig_width,
