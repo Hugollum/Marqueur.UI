@@ -45,8 +45,3 @@ team_colors = {
     'WSH': TeamColor('WSH', Color("#041E42", (4, 30, 66)),			Color("#C8102E", (200, 16, 46))),
     'WPG': TeamColor('WPG', Color("#041E42", (4, 30, 66)),			Color("#004C97", (0, 76, 151))) ,
 }
-
-def image_sizing_ratio(target_size, fig_width, fig_height, x_range, y_range):
-    x_pixels_per_unit = fig_width / (x_range[1] - x_range[0])
-    y_pixels_per_unit = fig_height / (y_range[1] - y_range[0])
-    return target_size / x_pixels_per_unit, target_size / y_pixels_per_unit
