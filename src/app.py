@@ -15,19 +15,24 @@ from distribution_charts import create_plot
 
 # Remove whitespace from the top of the page and sidebar
 st.markdown("""
+        <script>
+            function toggleZoomScreen() {
+            document.body.style.zoom = (1 / window.devicePixelRatio);
+            }
+        </script>
         <style>
-               .css-18e3th9 {
-                    padding-top: 0rem;
-                    padding-bottom: 10rem;
-                    padding-left: 5rem;
-                    padding-right: 5rem;
-                }
-               .css-1d391kg {
-                    padding-top: 3.5rem;
-                    padding-right: 1rem;
-                    padding-bottom: 3.5rem;
-                    padding-left: 1rem;
-                }
+            .css-1d391kg {
+                padding-top: 3.5rem;
+                padding-right: 1rem;
+                padding-bottom: 3.5rem;
+                padding-left: 1rem;
+            }
+            .stMainBlockContainer {
+                width: 800px; /* Set your desired width */
+                margin: 0 auto;   /* Center the content */
+                padding-left: 5px;
+                padding-right: 5px;
+            }
         </style>
         """, unsafe_allow_html=True)
 
