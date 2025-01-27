@@ -38,7 +38,7 @@ st.markdown("""
 
 render_progress_bar()
 
-eleven_players = st.checkbox("Remove worst players")
+remove_worst_player = st.checkbox("Remove worst player", value=True)
 csv_path = r"stats_detail.csv"
 
 column_order = ["rank", "team_logo", "pooler_name", "game_played", "total_points", "point_deficit", "average_points", "players", "hot", "cold", "injured"]
@@ -128,7 +128,7 @@ df['player_team'] = df['player_team'].apply(lambda x: team_images[x])
 
 df['players'] = df['position'].apply(lambda x: 1 if x != 'Team' else 0)
 
-if eleven_players:
+if remove_worst_player:
     df_players = df[df['position'] != 'Team']
     df_players_sorted = df_players.sort_values(by=['pooler_name', 'value_dt', 'total_points'],
                                                ascending=[True, True, False])
