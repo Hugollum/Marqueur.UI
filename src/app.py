@@ -167,7 +167,7 @@ else:
     selected_poolers = None
 
 fig = create_season_chart(df, selected_poolers)
-st.plotly_chart(fig)
+st.plotly_chart(fig, config={'staticPlot': True})
 
 positions = ['Forward', 'Defender', 'Goalie', 'Team']
 for position in positions:
@@ -177,4 +177,4 @@ for position in positions:
     else:
         showticklabels = False
     fig = create_position_chart(df, position, selected_poolers, showticklabels)
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, config={'staticPlot': True})
