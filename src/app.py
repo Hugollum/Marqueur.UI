@@ -1,4 +1,5 @@
 import streamlit as st
+from st_files_connection import FilesConnection
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -106,7 +107,8 @@ column_config={
     }
 
 def load_data(file_path):
-    df = pd.read_csv(file_path)
+    conn = st.connection('s3', type=FilesConnection)
+    df = conn.read("061039763978/marqueur/stats_detail.csv", input_format="csv", ttl=600)
     return df
 df = load_data(csv_path)
 
