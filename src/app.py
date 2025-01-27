@@ -6,6 +6,7 @@ import base64
 
 from progress_bar import render_progress_bar
 from season_chart import create_fig as create_season_chart
+from position_charts import create_fig as create_position_chart
 from distribution_charts import create_plot
 
 
@@ -159,5 +160,16 @@ if event.selection.rows:
     selected_poolers = summary_df.iloc[event.selection.rows]['pooler_name'].tolist()
 else:
     selected_poolers = None
+
 fig = create_season_chart(df, selected_poolers)
 st.plotly_chart(fig)
+
+positions = ['Forward', 'Defender', 'Goalie', 'Team']
+for position in positions:
+    st.markdown(f"**{position}**")
+    if position == positions[-1]:
+        showticklabels = True
+    else:
+        showticklabels = False
+    fig = create_position_chart(df, position, selected_poolers, showticklabels)
+    st.plotly_chart(fig)

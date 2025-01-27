@@ -70,13 +70,15 @@ def create_fig(df, selected_poolers=None):
         fig.add_trace(go.Scatter(x=[df_pooler['x'].iloc[-1]], y=[df_pooler['y'].iloc[-1]],
                                  mode='markers', name=f'{pooler_name}',
                                  marker=dict(color=color, size=30),
-                                 hoverinfo='none'))  # Set font color to match the marker
+                                 hovertemplate=f'{pooler_name}: {int(df_pooler['y'].iloc[-1])}',
+                                 hoverinfo='y'))  # Set font color to match the marker
 
         # Add the marker only at the last point for the current pooler_name
         fig.add_trace(go.Scatter(x=[df_pooler['x'].iloc[-1]], y=[df_pooler['y'].iloc[-1]],
                                  mode='markers', name=f'{pooler_name}',
                                  marker=dict(color=f"rgba(255,255,255, {str(a)})", size=27),
-                                 hoverinfo='none'))  # Set font color to match the marker
+                                 hovertemplate=f'{pooler_name}: {int(df_pooler['y'].iloc[-1])}',
+                                 hoverinfo='y'))  # Set font color to match the marker
 
         fig.add_layout_image(
             dict(
@@ -103,7 +105,7 @@ def create_fig(df, selected_poolers=None):
                       height=500,
                       width=800,
                       margin=dict(t=0, l=0, b=0, r=0),
-                      xaxis=dict(visible=True, title=dict(text="Season (days)"), fixedrange=True),  # Remove x-axis grid and labels
+                      xaxis=dict(visible=True, showgrid=False, title=dict(text="Season (days)"), fixedrange=True),  # Remove x-axis grid and labels
                       yaxis=dict(visible=True, fixedrange=True, side="right") # Keep y-axis grid lines
     )
 
