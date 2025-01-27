@@ -95,7 +95,7 @@ def create_fig(df, selected_poolers=None):
 
     fig.add_trace(go.Scatter(x=[0], y=[starting_points],
                              mode='markers',
-                             marker=dict(color="rgba(255,255,255, 1)", size=7),
+                             marker=dict(color="rgba(255,255,255, 1)", size=5),
                              hoverinfo='none'))  # Set font color to match the marker
 
     # Update layout
@@ -104,7 +104,7 @@ def create_fig(df, selected_poolers=None):
                       width=800,
                       margin=dict(t=0, l=0, b=0, r=0),
                       xaxis=dict(visible=True, title=dict(text="Season (days)"), fixedrange=True),  # Remove x-axis grid and labels
-                      yaxis=dict(visible=True, fixedrange=True ) # Keep y-axis grid lines
+                      yaxis=dict(visible=True, fixedrange=True, side="right") # Keep y-axis grid lines
     )
 
     return fig

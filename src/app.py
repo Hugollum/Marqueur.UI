@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from datetime import datetime
 from pathlib import Path
 import base64
 
+from progress_bar import render_progress_bar
 from season_chart import create_fig as create_season_chart
 from distribution_charts import create_plot
 
@@ -30,78 +30,7 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-# Define the start, playoff, and end dates of the hockey season
-season_start = datetime(2024, 9, 30)  # Start of the season
-playoff_start = datetime(2025, 4, 17) # Start of playoffs
-season_end = datetime(2025, 6, 30)    # End of the season
-
-today = datetime.now()
-if today < season_start:
-    progress_percent = 0
-    playoff_percent = 0
-    message = "The hockey season hasn't started yet."
-elif today > season_end:
-    progress_percent = 100
-    playoff_percent = (playoff_start - season_start).days / (season_end - season_start).days * 100
-    message = "The hockey season is over."
-else:
-    total_days = (season_end - season_start).days
-    elapsed_days = (today - season_start).days
-    progress_percent = (elapsed_days / total_days) * 100
-    playoff_percent = (playoff_start - season_start).days / total_days * 100
-    message = f"The hockey season is {elapsed_days} days in."
-
-# Custom HTML for the progress bar
-st.markdown(f"""
-    <style>
-    .progress-container {{
-        position: relative;
-        width: 100%;
-        background-color: #efefef; /* Light gray background */
-        border-radius: 10px;
-        height: 30px;
-        margin: 20px 0;
-    }}
-    .progress-bar {{
-        width: {progress_percent}%;
-        height: 100%;
-        background-color: #444444; /* Black progress */
-        border-radius: 10px 0 0 10px; /* Rounded left corner only */
-    }}
-    .playoff-line {{
-        position: absolute;
-        left: {playoff_percent}%;
-        top: 0;
-        bottom: 0;
-        border-left: 2px dashed #444444; /* Dashed black line */
-        z-index: 2;
-    }}
-    .regular-season-label, .playoff-label {{
-        position: absolute;
-        top: -30px; /* Position above the bar */
-        font-size: 14px;
-        color: #444444;;
-        font-weight: bold;
-    }}
-    .regular-season-label {{
-        left: 0;
-        width: {playoff_percent}%;
-        text-align: center;
-    }}
-    .playoff-label {{
-        left: {playoff_percent}%;
-        width: {100 - playoff_percent}%;
-        text-align: center;
-    }}
-    
-    </style>
-    <div class="progress-container">
-        <div class="progress-bar"></div>
-        <div class="playoff-line"></div>
-        <div class="regular-season-label">Regular Season</div>
-        <div class="playoff-label">Playoffs</div>
-    </div>
-""", unsafe_allow_html=True)
+render_progress_bar()
 
 eleven_players = st.checkbox("Remove worst players")
 csv_path = r"stats_detail.csv"
@@ -178,7 +107,6 @@ df = load_data(csv_path)
 
 @st.cache_data()
 def load_team_images():
-
     def open_image(path: str):
         with open(path, "rb") as p:
             file = p.read()
@@ -192,20 +120,23 @@ team_images = load_team_images()
 df['team_logo'] = df['pooler_team'].apply(lambda x: team_images[x])
 df['player_team'] = df['player_team'].apply(lambda x: team_images[x])
 
+df['players'] = df['position'].apply(lambda x: 1 if x != 'Team' else 0)
+
 if eleven_players:
     df_players = df[df['position'] != 'Team']
     df_players_sorted = df_players.sort_values(by=['pooler_name', 'value_dt', 'total_points'],
                                                ascending=[True, True, False])
     df_top_11 = df_players_sorted.groupby(['pooler_name', 'value_dt']).head(11)
-    # Step 4: Add back the 'Team' row(s)
     df_team = df[df['position'] == 'Team']
     df = pd.concat([df_top_11, df_team])
+
 
 # Filter data for max value_dt
 df["value_dt"] = pd.to_datetime(df["value_dt"])
 max_value_dt = df["value_dt"].max()
 df_now = df[df["value_dt"] == max_value_dt]
 df_now = df_now.drop(columns=["value_dt"])
+
 
 # Sum game_played and total_point by pooler_name
 summary_df = df_now.drop(columns=["position", "player_name", "player_team"])
@@ -216,18 +147,17 @@ summary_df['point_deficit'] = summary_df['total_points'] - max(summary_df['total
 summary_df['rank'] = np.arange(len(summary_df)) + 1
 
 
-with st.container(border=True):
-    event = st.dataframe(summary_df,
-                         height=210,
-                         width=800,
-                         hide_index=True,
-                         column_config=column_config,
-                         column_order=column_order,
-                         on_select="rerun",
-                         selection_mode="multi-row")
-    if event.selection.rows:
-        selected_poolers = summary_df.iloc[event.selection.rows]['pooler_name'].tolist()
-    else:
-        selected_poolers = None
-    fig = create_season_chart(df, selected_poolers)
-    st.plotly_chart(fig)
+event = st.dataframe(summary_df,
+                     height=598,
+                     width=800,
+                     hide_index=True,
+                     column_config=column_config,
+                     column_order=column_order,
+                     on_select="rerun",
+                     selection_mode="multi-row")
+if event.selection.rows:
+    selected_poolers = summary_df.iloc[event.selection.rows]['pooler_name'].tolist()
+else:
+    selected_poolers = None
+fig = create_season_chart(df, selected_poolers)
+st.plotly_chart(fig)
