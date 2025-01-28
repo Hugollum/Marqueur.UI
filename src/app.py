@@ -5,6 +5,8 @@ import numpy as np
 from pathlib import Path
 import base64
 
+import datetime as dt
+from live_game import render_score
 from progress_bar import render_progress_bar
 from season_chart import create_fig as create_season_chart
 from position_charts import create_fig as create_position_chart
@@ -36,6 +38,8 @@ st.markdown("""
             }
         </style>
         """, unsafe_allow_html=True)
+
+render_score()
 
 render_progress_bar()
 
@@ -106,6 +110,7 @@ column_config={
         )
     }
 
+@st.cache_data()
 def load_data(file_path):
     conn = st.connection('s3', type=FilesConnection)
     df = conn.read("061039763978/marqueur/stats_detail.csv", input_format="csv", ttl=600)
@@ -122,10 +127,10 @@ def load_team_images():
 
     dir_path = Path(r"assets/img/teams")
     files = [file for file in dir_path.iterdir() if file.is_file()]
-    return {file.stem: open_image(f"{dir_path}/{file.name}") for file in files if file.suffix == ".png"}
+    return  {file.stem: open_image(f"{dir_path}/{file.name}") for file in files if file.suffix == ".png"}
 team_images = load_team_images()
 
-df['team_logo'] = df['pooler_team'].apply(lambda x: team_images[x])
+df['team_logo'] =  df['pooler_team'].apply(lambda x: team_images[x])
 df['player_team'] = df['player_team'].apply(lambda x: team_images[x])
 
 df['players'] = df['position'].apply(lambda x: 1 if x != 'Team' else 0)
@@ -171,6 +176,10 @@ else:
 fig = create_season_chart(df, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 
+st.markdown(f"**Game Played**")
+fig = create_position_chart(df, "game_played", None, selected_poolers, True)
+st.plotly_chart(fig, config={'staticPlot': True})
+
 positions = ['Forward', 'Defender', 'Goalie', 'Team']
 for position in positions:
     st.markdown(f"**{position}**")
@@ -178,5 +187,5 @@ for position in positions:
         showticklabels = True
     else:
         showticklabels = False
-    fig = create_position_chart(df, position, selected_poolers, showticklabels)
+    fig = create_position_chart(df, 'total_points', position, selected_poolers, showticklabels)
     st.plotly_chart(fig, config={'staticPlot': True})

@@ -12,25 +12,30 @@ def image_sizing_ratio(target_size, fig_width, fig_height, x_range, y_range):
     return target_size / x_pixels_per_unit, target_size / y_pixels_per_unit
 
 
-def create_fig(df, position, selected_poolers=None, showticklabels=False):
+def create_fig(df, x_column='total_points', position=None, selected_poolers=None, showticklabels=False):
     # Filter data for max value_dt
     df["value_dt"] = pd.to_datetime(df["value_dt"])
     max_value_dt = df["value_dt"].max()
     df = df[df["value_dt"] == max_value_dt]
     df = df.drop(columns=["value_dt"])
 
-    df_grouped = df.groupby(['pooler_name', 'pooler_team', 'position'])['total_points'].sum().reset_index()
-    df = df_grouped[['pooler_name', 'pooler_team', 'position', 'total_points']]
+    if position is not None:
+        df_grouped = df.groupby(['pooler_name', 'pooler_team', 'position'])[x_column].sum().reset_index()
+        df = df_grouped[['pooler_name', 'pooler_team', 'position', x_column]]
+    else:
+        df_grouped = df.groupby(['pooler_name', 'pooler_team'])[x_column].sum().reset_index()
+        df = df_grouped[['pooler_name', 'pooler_team', x_column]]
 
     df = df.rename(columns={
-        'total_points': 'x'
+        x_column: 'x'
     })
     s = (df['x'].max() - df['x'].min()) * 0.1
     x_range = [df['x'].min() - s, df['x'].max() + s]
     df['y'] = 0
     y_range = [-1,1]
 
-    df = df[df['position'] == position]
+    if position is not None:
+        df = df[df['position'] == position]
 
     if selected_poolers:
         df['selected'] = df['pooler_name'].isin(selected_poolers)
