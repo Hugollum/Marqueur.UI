@@ -1,4 +1,8 @@
+import streamlit as st
 from dataclasses import dataclass
+from pathlib import Path
+import base64
+
 
 @dataclass()
 class Color:
@@ -45,3 +49,17 @@ team_colors = {
     'WSH': TeamColor('WSH', Color("#041E42", (4, 30, 66)),			Color("#C8102E", (200, 16, 46))),
     'WPG': TeamColor('WPG', Color("#041E42", (4, 30, 66)),			Color("#004C97", (0, 76, 151))) ,
 }
+
+
+@st.cache_data()
+def _load_team_images():
+    def open_image(path: str):
+        with open(path, "rb") as p:
+            file = p.read()
+            return f"data:image/png;base64,{base64.b64encode(file).decode()}"
+
+    dir_path = Path(r"assets/img/teams")
+    files = [file for file in dir_path.iterdir() if file.is_file()]
+    return {file.stem: open_image(f"{dir_path}/{file.name}") for file in files if file.suffix == ".png"}
+
+team_images = _load_team_images()

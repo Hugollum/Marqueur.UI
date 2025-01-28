@@ -6,7 +6,7 @@ from scipy.interpolate import CubicSpline
 from plotly.graph_objects import Layout
 from PIL import Image
 
-from style import team_colors
+from util.style import team_colors
 
 
 def create_fig(df, selected_poolers=None):

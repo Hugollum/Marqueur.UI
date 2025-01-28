@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from plotly.graph_objects import Layout
 from PIL import Image
 
-from style import team_colors
+from util.style import team_colors
 
 
 def image_sizing_ratio(target_size, fig_width, fig_height, x_range, y_range):
