@@ -2,7 +2,9 @@ import streamlit as st
 import requests
 from pathlib import Path
 import base64
-import os
+import datetime as dt
+import pytz
+from bs4 import BeautifulSoup
 
 url = "https://api-web.nhle.com/v1/score/now"
 
@@ -22,11 +24,20 @@ def render_score():
     # CSS styles for the layout
     css = """
     <style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+        gap: 20px;
+        justify-items: center;
+        padding-bottom: 20px;
+    }
+    
     .container {
         text-align: center;
         font-weight: bold;
         width: 100%;
-        padding: 0 10px 20px 10px;
+        min-width: 140px;
+        padding: 0;
         color: #444444;
     }
 
@@ -70,23 +81,53 @@ def render_score():
 
         games = data.get("games", [])
         if not games:
-            print("No games are currently being played.")
+            return None
 
+        current_date = data.get('currentDate')
+        if current_date:
+            # TODO: Put in utils
+            current_date  = dt.datetime.strptime(current_date, "%Y-%m-%d")
+            # Helper function to determine the ordinal suffix
+            def get_ordinal_suffix(day):
+                if 11 <= day <= 13:  # Special case for 11th, 12th, 13th
+                    return "th"
+                elif day % 10 == 1:
+                    return "st"
+                elif day % 10 == 2:
+                    return "nd"
+                elif day % 10 == 3:
+                    return "rd"
+                else:
+                    return "th"
+
+            # Get the day and its ordinal suffix
+            day = current_date .day
+            ordinal_suffix = get_ordinal_suffix(day)
+            current_date = current_date.strftime(f"%B {day}{ordinal_suffix}, %Y")
+
+            st.markdown(f"***{current_date}***")
+        html = '<div class="grid">'
+        # TODO: Put in function
         for i, game in enumerate(games):
-            if i % 4 == 0:
-                cols = st.columns(4)
             game_id = game.get('id')
             game_type = game.get('gameType')  # Season=2, Playoff=3
             game_date = game.get('gameDate')
             start_time = game.get('startTimeUTC')
+            if start_time:
+                start_time = dt.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%SZ")
+                utc_zone = pytz.utc
+                et_zone = pytz.timezone("US/Eastern")
+                start_time = utc_zone.localize(start_time)
+                start_time = start_time.astimezone(et_zone)
+                start_time = start_time.strftime("%H:%M ET")
             game_state = game.get('gameState')  # FUT, PRE, LIVE, OFF
 
             home_team = game.get("homeTeam", {}).get("abbrev", "")
             home_score = game.get("homeTeam", {}).get("score", 0)
-            home_odds = game.get("homeTeam", {}).get("odds", [])
+            home_odds = game.get("homeTeam", {}).get("odds", [])  # TODO: Use
             away_team = game.get("awayTeam", {}).get("abbrev", "")
             away_score = game.get("awayTeam", {}).get("score", 0)
-            away_odds = game.get("awayTeam", {}).get("score", 0)
+            away_odds = game.get("awayTeam", {}).get("score", 0)  # TODO: Use
 
             period_descriptor = game.get('periodDescriptor', {})
             period_number = period_descriptor.get('number')
@@ -103,8 +144,10 @@ def render_score():
             clock = game.get("clock", {})
             time_remaining = clock.get('timeRemaining')
             in_intermission = clock.get('inIntermission')
+            if in_intermission:
+                time_remaining = "Intermission"
 
-            goals = game.get("goals", [])
+            goals = game.get("goals", []) # TODO: Use?
             game_link = game.get("gameCenterLink", "")
 
             if game_state == "LIVE":
@@ -115,30 +158,31 @@ def render_score():
                 game_status_html = f"""<div class="period">Starts at</div><div class="time">{start_time}</div>"""  # TODO: Parse time
 
             # HTML content with the desired layout
-            html = f"""
+            html += f"""
             <a href="https://www.nhl.com{game_link}" target="_blank" style="text-decoration: none;">
             <div class="container">
                 <div class="game-status">
                     {game_status_html}
                 </div>
-                <hr class="game-info-split">
+                <hr class="game-info-split"/>
                 <div class="scoreboard">
                     <div class="team home-team">
-                        <img src="{team_images[home_team]}" alt="{home_team}">
+                        <img src="{team_images[home_team]}" alt="{home_team}"/>
                     </div>
                     <div class="score">
                         <span class="home-score">{home_score}</span> - <span class="away-score">{away_score}</span>
                     </div>
                     <div class="team away-team">
-                        <img src="{team_images[away_team]}" alt="{away_team}">
+                        <img src="{team_images[away_team]}" alt="{away_team}"/>
                     </div>
                 </div>
             </div>
             </a>
             """
-            with cols[i % 4]:
-                st.markdown(html, unsafe_allow_html=True)
+        html += '</div>'
 
+        html = BeautifulSoup(html,features="html.parser").prettify()
+        st.markdown(html, unsafe_allow_html=True)
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")
 

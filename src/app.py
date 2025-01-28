@@ -5,7 +5,6 @@ import numpy as np
 from pathlib import Path
 import base64
 
-import datetime as dt
 from live_game import render_score
 from progress_bar import render_progress_bar
 from season_chart import create_fig as create_season_chart
@@ -110,10 +109,10 @@ column_config={
         )
     }
 
-@st.cache_data()
+@st.cache_data(ttl=300)
 def load_data(file_path):
     conn = st.connection('s3', type=FilesConnection)
-    df = conn.read("061039763978/marqueur/stats_detail.csv", input_format="csv", ttl=600)
+    df = conn.read("061039763978/marqueur/stats_detail.csv", input_format="csv", ttl=30)
     return df
 df = load_data(csv_path)
 
