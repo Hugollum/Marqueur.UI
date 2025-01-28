@@ -8,6 +8,29 @@ from summary_df import render_summary_df
 from season_chart import create_fig as create_season_chart
 from position_charts import create_fig as create_position_chart
 
+
+st.markdown("""
+        <script>
+            function toggleZoomScreen() {
+            document.body.style.zoom = (1 / window.devicePixelRatio);
+            }
+        </script>
+        <style>
+            .css-1d391kg {
+                padding-top: 3.5rem;
+                padding-right: 1rem;
+                padding-bottom: 3.5rem;
+                padding-left: 1rem;
+            }
+            .stMainBlockContainer {
+                width: 800px; /* Set your desired width */
+                margin: 0 auto;   /* Center the content */
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+
 # Title of the Streamlit app
 #st.title("")
 

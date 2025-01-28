@@ -11,9 +11,6 @@ _CHECKBOX_DEFAULT = True
 s3_bucket = st.secrets["AWS_S3_BUCKET"]
 
 
-if _CHECKBOX_KEY not in st.session_state:
-    st.session_state[_CHECKBOX_KEY] = _CHECKBOX_DEFAULT
-
 @st.cache_data(ttl=300)
 def _load_stats_detail():
     file_path = "marqueur/stats_detail.csv"
@@ -72,4 +69,4 @@ def update_marqueur_data():
 
 
 def render_remove_checkbox():
-    return st.checkbox("Remove worst player", key=_CHECKBOX_KEY, on_change=update_marqueur_data)
+    return st.checkbox("Remove worst player", value=_CHECKBOX_DEFAULT, key=_CHECKBOX_KEY, on_change=update_marqueur_data)
