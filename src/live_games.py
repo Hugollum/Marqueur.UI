@@ -2,7 +2,7 @@ import streamlit as st
 from bs4 import BeautifulSoup
 
 from util.style import team_images
-from data.nhl import scores, GameState
+from data.nhl import get_score, GameState
 
 
 css = """
@@ -56,6 +56,7 @@ css = """
 
 
 def render_score():
+    scores = get_score()
     if scores is None:
         return
 

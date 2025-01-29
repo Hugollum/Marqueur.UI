@@ -24,7 +24,7 @@ def _load_stats_detail():
     return df
 
 
-def _get_stats_detail():
+def get_stats_detail():
     df = _load_stats_detail()
     if st.session_state.get(_CHECKBOX_KEY, _CHECKBOX_DEFAULT):
         df_players = df[df['position'] != 'Team']
@@ -36,8 +36,8 @@ def _get_stats_detail():
     return df
 
 
-def _get_stats_summary():
-    df = _get_stats_detail()
+def get_stats_summary():
+    df = get_stats_detail()
 
     # Filter data for max value_dt
     df["value_dt"] = pd.to_datetime(df["value_dt"])
@@ -56,17 +56,5 @@ def _get_stats_summary():
     return df
 
 
-@dataclass()
-class Stats:
-    detail: pd.DataFrame()
-    summary: pd.DataFrame()
-stats = Stats(detail=_get_stats_detail(), summary=_get_stats_summary())
-
-
-def update_marqueur_data():
-    stats.detail = _get_stats_detail()
-    stats.summary = _get_stats_summary()
-
-
 def render_remove_checkbox():
-    return st.checkbox("Remove worst player", value=_CHECKBOX_DEFAULT, key=_CHECKBOX_KEY, on_change=update_marqueur_data)
+    return st.checkbox("Remove worst player", value=_CHECKBOX_DEFAULT, key=_CHECKBOX_KEY)

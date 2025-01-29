@@ -14,8 +14,8 @@ class GameState(str, Enum):
     ENDED = "OFF"
 
 
-@st.cache_data(ttl=30)
-def _get_score():
+@st.cache_data(tt=10)
+def get_score():
     endpoint = "/v1/score/now"
     scores = None
 
@@ -104,5 +104,3 @@ def _get_score():
         print(f"Error fetching data: {e}")
 
     return scores
-
-scores = _get_score()

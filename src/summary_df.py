@@ -1,5 +1,4 @@
 import streamlit as st
-from data.marqueur import stats
 
 column_order = ["rank", "team_logo", "pooler_name", "game_played", "total_points", "point_deficit", "average_points", "players", "hot", "cold", "injured"]
 column_config={
@@ -66,8 +65,8 @@ column_config={
     }
 
 
-def render_summary_df():
-    return st.dataframe(stats.summary,
+def render_summary_df(df):
+    return st.dataframe(df,
                         height=598,
                         width=800,
                         hide_index=True,
