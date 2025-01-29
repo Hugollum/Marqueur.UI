@@ -14,7 +14,7 @@ class GameState(str, Enum):
     ENDED = "OFF"
 
 
-@st.cache_data(tt=10)
+@st.cache_data(ttl=10)
 def get_score():
     endpoint = "/v1/score/now"
     scores = None
