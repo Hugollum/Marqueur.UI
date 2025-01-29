@@ -7,13 +7,6 @@ import pytz
 api = "https://api-web.nhle.com"
 
 
-class GameState(str, Enum):
-    FUTURE = "FUT"
-    PREGAME = "PRE"
-    LIVE = "LIVE"
-    ENDED = "OFF"
-
-
 @st.cache_data(ttl=10)
 def get_score():
     endpoint = "/v1/score/now"
@@ -67,7 +60,7 @@ def get_score():
                 start_time = start_time.astimezone(et_zone)
                 start_time = start_time.strftime("%H:%M ET")
             score['start_time'] = start_time
-            score['game_state'] = GameState(game.get('gameState'))  # FUT, PRE, LIVE, OFF
+            score['game_state'] = game.get('gameState')  # FUT, PRE, LIVE, FINAL, CRIT, OFF
             score['home_team'] = game.get("homeTeam", {}).get("abbrev", "")
             score['home_score'] = game.get("homeTeam", {}).get("score", 0)
             score['home_odds'] = game.get("homeTeam", {}).get("odds", [])  # TODO: Use

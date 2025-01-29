@@ -2,7 +2,7 @@ import streamlit as st
 from bs4 import BeautifulSoup
 
 from util.style import team_images
-from data.nhl import get_score, GameState
+from data.nhl import get_score
 
 
 css = """
@@ -65,14 +65,14 @@ def render_score():
 
     html = '<div class="grid">'
     for game in scores['games']:
-        if game['game_state'] == GameState.LIVE:
+        if game['game_state'] in ('LIVE', 'CRIT'):
             game_status_html = f"""<div class="period">{game['period_label']}</div> <div class="time">{game['time_remaining']}</div>"""
-        elif game['game_state'] == GameState.ENDED:
+        elif game['game_state'] in ('FINAL', 'OFF'):
             game_status_html = f"""<div class="period">{game['period_label']}</div><div class="time">Final</div>"""
-        elif game['game_state'] in (GameState.FUTURE, GameState.PREGAME):
+        elif game['game_state'] in ('FUT', 'PRE'):
             game_status_html = f"""<div class="period">Starts at</div><div class="time">{game['start_time']}</div>"""
         else:
-            game_status_html = ""
+            game_status_html = game['game_state']
 
         # HTML content with the desired layout
         html += f"""
