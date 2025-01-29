@@ -49,6 +49,7 @@ def get_stats_summary():
     df = df.drop(columns=["position", "player_name", "player_team"])
     df = df.groupby(["team_logo", "pooler_name"]).sum().reset_index()
     df['average_points'] = df['total_points'] / df['game_played'].replace(0, np.nan)
+    df['delta_average'] = df['delta_points'] / df['delta_game'].replace(0, np.nan)
     df = df.sort_values(by=["total_points"], ascending=False)
     df['point_deficit'] = df['total_points'] - max(df['total_points'])
     df['rank'] = np.arange(len(df)) + 1
