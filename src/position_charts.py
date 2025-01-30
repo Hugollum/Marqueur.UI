@@ -3,13 +3,7 @@ import plotly.graph_objects as go
 from plotly.graph_objects import Layout
 from PIL import Image
 
-from util.style import team_colors
-
-
-def image_sizing_ratio(target_size, fig_width, fig_height, x_range, y_range):
-    x_pixels_per_unit = fig_width / (x_range[1] - x_range[0])
-    y_pixels_per_unit = fig_height / (y_range[1] - y_range[0])
-    return target_size / x_pixels_per_unit, target_size / y_pixels_per_unit
+from util.style import team_colors, image_sizing_ratio
 
 
 def create_fig(df, x_column='total_points', position=None, selected_poolers=None, showticklabels=False):

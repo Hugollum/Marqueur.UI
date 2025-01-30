@@ -1,6 +1,6 @@
 import streamlit as st
 
-from data.marqueur import render_remove_checkbox, get_stats_detail, get_stats_summary
+from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_stats_summary
 
 from live_games import render_score
 from progress_bar import render_progress_bar
@@ -36,7 +36,7 @@ st.markdown("""
 
 render_progress_bar()
 render_score()
-render_remove_checkbox()
+render_mulligan_checkbox()
 
 df_summary = get_stats_summary()
 df_detail = get_stats_detail()
@@ -50,7 +50,7 @@ else:
     selected_poolers = None
 
 
-
+render_projections_checkbox()
 fig = create_season_chart(df_detail, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 

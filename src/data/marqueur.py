@@ -6,8 +6,10 @@ from st_files_connection import FilesConnection
 
 from util.style import team_images
 
-_CHECKBOX_KEY = "remove_worst_player"
-_CHECKBOX_DEFAULT = True
+_MULLIGAN_CHECKBOX_KEY = "mulligan_checkbox"
+_MULLIGAN_CHECKBOX_DEFAULT = True
+_PROJECTIONS_CHECKBOX_KEY = "projections_checkbox"
+_PROJECTIONS_CHECKBOX_DEFAULT = True
 s3_bucket = st.secrets["AWS_S3_BUCKET"]
 
 
@@ -26,18 +28,28 @@ def _load_stats_detail():
 
 def get_stats_detail():
     df = _load_stats_detail()
-    if st.session_state.get(_CHECKBOX_KEY, _CHECKBOX_DEFAULT):
+
+    # Apply Mulligan
+    if st.session_state.get(_MULLIGAN_CHECKBOX_KEY, _MULLIGAN_CHECKBOX_DEFAULT):
         df_players = df[df['position'] != 'Team']
         df_players_sorted = df_players.sort_values(by=['pooler_name', 'value_dt', 'total_points'],
                                                    ascending=[True, True, False])
         df_top_11 = df_players_sorted.groupby(['pooler_name', 'value_dt']).head(11)
         df_team = df[df['position'] == 'Team']
         df = pd.concat([df_top_11, df_team])
+        
+    # Remove projections
+    if not st.session_state.get(_PROJECTIONS_CHECKBOX_KEY, _PROJECTIONS_CHECKBOX_KEY):
+        df = df[~df['is_projection']]
+
     return df
 
 
 def get_stats_summary():
     df = get_stats_detail()
+
+    # Filter out projections
+    df = df[~df['is_projection']]
 
     # Filter data for max value_dt
     df["value_dt"] = pd.to_datetime(df["value_dt"])
@@ -57,5 +69,8 @@ def get_stats_summary():
     return df
 
 
-def render_remove_checkbox():
-    return st.checkbox("Remove worst player", value=_CHECKBOX_DEFAULT, key=_CHECKBOX_KEY)
+def render_mulligan_checkbox():
+    return st.checkbox("With mulligan", value=_MULLIGAN_CHECKBOX_DEFAULT, key=_MULLIGAN_CHECKBOX_KEY)
+
+def render_projections_checkbox():
+    return st.checkbox("With trends", value=_PROJECTIONS_CHECKBOX_DEFAULT, key=_PROJECTIONS_CHECKBOX_KEY)

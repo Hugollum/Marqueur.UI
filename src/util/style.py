@@ -63,3 +63,9 @@ def _load_team_images():
     return {file.stem: open_image(f"{dir_path}/{file.name}") for file in files if file.suffix == ".png"}
 
 team_images = _load_team_images()
+
+
+def image_sizing_ratio(target_size, fig_width, fig_height, x_range, y_range):
+    x_pixels_per_unit = fig_width / (x_range[1] - x_range[0])
+    y_pixels_per_unit = fig_height / (y_range[1] - y_range[0])
+    return target_size / x_pixels_per_unit, target_size / y_pixels_per_unit
