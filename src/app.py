@@ -1,12 +1,16 @@
 import streamlit as st
 
-from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_stats_summary
+from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
 
 from live_games import render_score
 from progress_bar import render_progress_bar
 from summary_df import render_summary_df
+from roster_df import render_roaster_df
 from season_chart import create_fig as create_season_chart
 from position_charts import create_fig as create_position_chart
+
+import sys
+sys.stdout.reconfigure(encoding="utf-8")
 
 
 st.markdown("""
@@ -40,15 +44,19 @@ render_mulligan_checkbox()
 
 df_summary = get_stats_summary()
 df_detail = get_stats_detail()
+df_roster = get_roster_stats()
+
+with st.popover("Pooler roster", use_container_width=800):
+    pooler_name = st.selectbox('Pooler', options=df_summary['pooler_name'].drop_duplicates())
+    df_roster = df_roster[df_roster['pooler_name'] == pooler_name]
+    render_roaster_df(df_roster)
 
 summary_df_event = render_summary_df(df_summary)
-
 
 if summary_df_event.selection.rows:
     selected_poolers = df_summary.iloc[summary_df_event.selection.rows]['pooler_name'].tolist()
 else:
     selected_poolers = None
-
 
 render_projections_checkbox()
 fig = create_season_chart(df_detail, selected_poolers)

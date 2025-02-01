@@ -7,7 +7,6 @@ import pytz
 api = "https://api-web.nhle.com"
 
 
-@st.cache_data(ttl=10)
 def get_score():
     endpoint = "/v1/score/now"
     scores = None

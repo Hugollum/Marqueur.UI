@@ -12,7 +12,8 @@ from util.style import team_colors, image_sizing_ratio
 def create_fig(df, selected_poolers=None):
     df['value_dt'] = pd.to_datetime(df['value_dt'])
     df['day'] = (df['value_dt'] - dt.datetime(2024, 9, 30)).dt.days
-    max_day = df['day'].max()
+
+    max_day = df[~df['is_projection']]['day'].max()
     df_grouped = df.groupby(['day', 'pooler_name', 'pooler_team', 'is_projection'])['total_points'].sum().reset_index()
     df_grouped['normalized_points'] = df_grouped['total_points'] - df_grouped.groupby('day')['total_points'].transform('median') + df_grouped.groupby('day')['total_points'].transform('median').iloc[-1]
     starting_points = df_grouped.groupby('day')['total_points'].transform('median').iloc[-1]
@@ -38,7 +39,7 @@ def create_fig(df, selected_poolers=None):
         width=fig_width,
         height=fig_height)
     fig = go.Figure(layout=layout)
-    sizex, sizey = image_sizing_ratio(25.0, fig_width, fig_height, x_range, y_range)
+    sizex, sizey = image_sizing_ratio(35, fig_width, fig_height, x_range, y_range)
 
     # Loop over each unique pooler_name to generate a cubic spline curve
     for i, r in df[df['x']==max_day].sort_values(['selected', 'y'], ascending=True).iterrows():
@@ -59,7 +60,7 @@ def create_fig(df, selected_poolers=None):
         if not df_pooler[df_pooler['is_projection']].empty:
             trace_configs = [
                 (df_pooler[~df_pooler['is_projection']], 'solid', 5),
-                (pd.concat([df[df['y']==max_day], df_pooler[df_pooler['is_projection']]]), 'dash', 4)
+                (df_pooler[df_pooler['is_projection']], 'dash', 4)
             ]
         else:
             trace_configs = [(df_pooler, 'solid', 5)]
@@ -82,19 +83,6 @@ def create_fig(df, selected_poolers=None):
                 hovertemplate=f'{pooler_name}'
             ))
 
-
-        fig.add_trace(go.Scatter(x=[df_pooler['x'].iloc[-1]], y=[df_pooler['y'].iloc[-1]],
-                                 mode='markers', name=f'{pooler_name}',
-                                 marker=dict(color=color, size=30),
-                                 hovertemplate=f'{pooler_name}: {int(df_pooler['y'].iloc[-1])}',
-                                 hoverinfo='y'))  # Set font color to match the marker
-
-        # Add the marker only at the last point for the current pooler_name
-        fig.add_trace(go.Scatter(x=[df_pooler['x'].iloc[-1]], y=[df_pooler['y'].iloc[-1]],
-                                 mode='markers', name=f'{pooler_name}',
-                                 marker=dict(color=f"rgba(255,255,255, {str(a)})", size=27),
-                                 hovertemplate=f'{pooler_name}: {int(df_pooler['y'].iloc[-1])}',
-                                 hoverinfo='y'))  # Set font color to match the marker
 
         fig.add_layout_image(
             dict(

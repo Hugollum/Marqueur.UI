@@ -1,20 +1,16 @@
 import streamlit as st
 
-column_order = ["rank", "team_logo", "pooler_name", "delta_game", "delta_points", "game_played", "total_points", "point_deficit", "average_points", "injured", "hot", "cold", "players"]
+column_order = ["player_team", "position", "player_name", "delta_game", "delta_points", "game_played", "total_points", "average_points", "injured", "hot", "cold"]
 column_config={
-        "rank": st.column_config.NumberColumn(
-            label="#",
-            help="Game played",
-            step=1,
-            format="%d",
-        ),
-        "pooler_name": st.column_config.TextColumn(
-            label="Pooler",
-        ),
-        "team_logo": st.column_config.ImageColumn(
+        "player_team": st.column_config.ImageColumn(
             label="Team",
             width="small",
-            pinned=True,
+        ),
+        "position": st.column_config.TextColumn(
+            label="Position",
+        ),
+        "name": st.column_config.TextColumn(
+            label="Player",
         ),
         "delta_game": st.column_config.NumberColumn(
             label="📆",
@@ -40,22 +36,10 @@ column_config={
             step=1,
             format="%d",
         ),
-        "point_deficit": st.column_config.NumberColumn(
-            label="PD",
-            help="Point deficit with lead",
-            step=1.0,
-            format="%d",
-        ),
         "average_points": st.column_config.NumberColumn(
             label="AP",
             help="Total points / Game played",
             format="%0.2f",
-        ),
-        "players": st.column_config.NumberColumn(
-            label="🏒",
-            help="Number of players",
-            step=1,
-            format="%d",
         ),
         "hot": st.column_config.NumberColumn(
             label="🔥",
@@ -78,12 +62,9 @@ column_config={
     }
 
 
-def render_summary_df(df):
+def render_roaster_df(df):
     return st.dataframe(df,
-                        height=598,
                         width=800,
                         hide_index=True,
                         column_config=column_config,
-                        column_order=column_order,
-                        on_select="rerun",
-                        selection_mode="multi-row")
+                        column_order=column_order)

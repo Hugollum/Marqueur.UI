@@ -44,7 +44,7 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
         height=fig_height)
     fig = go.Figure(layout=layout)
 
-    sizex, sizey = image_sizing_ratio(25.0, fig_width, fig_height, x_range, y_range)
+    sizex, sizey = image_sizing_ratio(30.0, fig_width, fig_height, x_range, y_range)
     sizey + 1
 
     # Loop over each unique pooler_name to generate a cubic spline curve
@@ -61,22 +61,7 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
         pooler_team = r['pooler_team']
         team_logo = Image.open(f"assets/img/teams/{pooler_team}.png")
         team_color = team_colors[pooler_team]
-        color = f"rgba({','.join([str(c) for c in team_color.primary.rgb])}, {str(a)})"
-        faded = f"rgba({','.join([str(c) for c in team_color.primary.rgb])}, 0.1)"
 
-        fig.add_trace(go.Scatter(
-            x=df_pooler['x'],
-            y=df_pooler['y'],
-            mode='markers',
-            name="",
-            marker=dict(
-                color=faded,
-                size=30,
-                line=dict(color=color, width=2)
-            ),
-            hovertemplate = f"{pooler_name}: %{{x}}",
-            hoverinfo='none'
-        ))  # Set font color to match the marker
 
         fig.add_layout_image(
             dict(
