@@ -47,7 +47,9 @@ df_detail = get_stats_detail()
 df_roster = get_roster_stats()
 
 with st.popover("Pooler roster", use_container_width=800):
-    pooler_name = st.selectbox('Pooler', options=df_summary['pooler_name'].drop_duplicates())
+    col, _, _ = st.columns(3)
+    with col:
+        pooler_name = st.selectbox('Pooler', options=df_summary['pooler_name'].drop_duplicates())
     df_roster = df_roster[df_roster['pooler_name'] == pooler_name]
     render_roaster_df(df_roster)
 
