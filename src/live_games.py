@@ -73,7 +73,7 @@ def render_score():
             game_status_html = f"""<div class="period">Starts at</div><div class="time">{game['start_time']}</div>"""
         else:
             game_status_html = game['game_state']
-
+        
         # HTML content with the desired layout
         html += f"""
         <a href="https://www.nhl.com{game['game_center_link']}" target="_blank" style="text-decoration: none;">
@@ -84,13 +84,13 @@ def render_score():
             <hr class="game-info-split"/>
             <div class="scoreboard">
                 <div class="team home-team">
-                    <img src="{team_images[game['home_team']]}" alt="{game['home_team']}"/>
+                    <img src="{team_images.get(game['home_team'])}" alt="{game['home_team']}"/>
                 </div>
                 <div class="score">
                     <span class="home-score">{game['home_score']}</span> - <span class="away-score">{game['away_score']}</span>
                 </div>
                 <div class="team away-team">
-                    <img src="{team_images[game['away_team']]}" alt="{game['away_team']}"/>
+                    <img src="{team_images.get(game['away_team'])}" alt="{game['away_team']}"/>
                 </div>
             </div>
         </div>
