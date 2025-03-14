@@ -1,5 +1,6 @@
 import streamlit as st
 from enum import Enum
+import pandas as pd
 import requests
 import datetime as dt
 import pytz
@@ -96,3 +97,34 @@ def get_score():
         print(f"Error fetching data: {e}")
 
     return scores
+
+
+def get_standings():
+    endpoint = "/v1/standings/now"
+    standings = None
+
+    try:
+        response = requests.get(api + endpoint)
+        response.raise_for_status()
+
+        data = response.json()
+        rows = data.get("standings", [])
+        if not rows:
+            return standings
+
+        standings = []
+        for row in rows:
+            standing = {}
+            standing['team'] = row.get('teamAbbrev', {}).get('default')
+            standing['conference'] = row.get('conferenceName')
+            standing['conference_standing'] = row.get('conferenceSequence')
+            standing['division'] = row.get('divisionName')
+            standing['division_standing'] = row.get('divisionSequence')
+            standing['points'] = row.get('points')
+            standing['wildcard_standing'] = row.get('wildcardSequence')
+            standings.append(standing)
+
+    except requests.RequestException as e:
+        print(f"Error fetching data: {e}")
+
+    return pd.DataFrame(standings)

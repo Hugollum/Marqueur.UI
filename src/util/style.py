@@ -38,7 +38,7 @@ team_colors = {
     'OTT': TeamColor('OTT', Color("#000000", (0, 0, 0)),			Color("#DA1A32", (218, 26, 50))),
     'PHI': TeamColor('PHI', Color("#F74902", (247, 73, 2)),		    Color("#000000", (0, 0, 0))),
     'PIT': TeamColor('PIT', Color("#000000", (0, 0, 0)),			Color("#CFC493", (207, 196, 147))),
-    'SLT': TeamColor('SLT', Color("#002F87", (0, 47, 135)),		    Color("#FCB514", (252, 181, 20))),
+    'STL': TeamColor('STL', Color("#002F87", (0, 47, 135)),		    Color("#FCB514", (252, 181, 20))),
     'SJS': TeamColor('SJS', Color("#006D75", (0, 109, 117)),		Color("#EA7200", (234, 114, 0))),
     'SEA': TeamColor('SEA', Color("#001628", (0, 22, 40)),			Color("#99d9d9", (153, 217, 217))),
     'TBL': TeamColor('TBL', Color("#002868", (0, 40, 104)),		    Color("#FFFFFF", (255, 255, 255))),

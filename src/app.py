@@ -1,6 +1,7 @@
 import streamlit as st
 
 from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
+from data.nhl import get_standings
 
 from live_games import render_score
 from progress_bar import render_progress_bar
@@ -8,6 +9,7 @@ from summary_df import render_summary_df
 from roster_df import render_roaster_df
 from season_chart import create_fig as create_season_chart
 from position_charts import create_fig as create_position_chart
+from standings_charts import create_fig as create_standings_chart
 
 import sys
 sys.stdout.reconfigure(encoding="utf-8")
@@ -45,7 +47,9 @@ render_mulligan_checkbox()
 df_summary = get_stats_summary()
 df_detail = get_stats_detail()
 df_roster = get_roster_stats()
+df_standings = get_standings()
 
+st.subheader("Poolers", divider="gray")
 with st.expander("Pooler roster", expanded=False):
     col, _, _ = st.columns(3)
     with col:
@@ -77,3 +81,16 @@ for position in positions:
         showticklabels = False
     fig = create_position_chart(df_detail, 'total_points', position, selected_poolers, showticklabels)
     st.plotly_chart(fig, config={'staticPlot': True})
+
+
+st.subheader("Standing", divider="gray")
+conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
+for conference, divisions in conferences:
+    for division in divisions:
+        st.markdown(f"**{division}**")
+        if division == 'Pacific':
+            showticklabels = True
+        else:
+            showticklabels = False
+        fig = create_standings_chart(df_standings, conference, division, showticklabels)
+        st.plotly_chart(fig, config={'staticPlot': True})
