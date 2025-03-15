@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
 from data.nhl import get_standings
@@ -9,6 +10,7 @@ from summary_df import render_summary_df
 from roster_df import render_roaster_df
 from season_chart import create_fig as create_season_chart
 from position_charts import create_fig as create_position_chart
+from playoff_chart import create_fig as create_playoff_chart
 from standings_charts import create_fig as create_standings_chart
 
 import sys
@@ -48,6 +50,9 @@ df_summary = get_stats_summary()
 df_detail = get_stats_detail()
 df_roster = get_roster_stats()
 df_standings = get_standings()
+df_playoff = pd.merge(df_standings, df_roster, left_on=['team'], right_on=['player_team_abbv'])
+df_playoff = df_playoff[df_playoff['wildcard_standing'] <= 2]
+df_playoff = df_playoff[list(df_roster.columns)]
 
 st.subheader("Poolers", divider="gray")
 with st.expander("Pooler roster", expanded=False):
@@ -83,6 +88,11 @@ for position in positions:
     st.plotly_chart(fig, config={'staticPlot': True})
 
 
+st.markdown(f"**Playoff**")
+fig = create_playoff_chart(df_playoff, selected_poolers)
+st.plotly_chart(fig, config={'staticPlot': True})
+
+
 st.subheader("Standing", divider="gray")
 conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
 for conference, divisions in conferences:
@@ -94,3 +104,11 @@ for conference, divisions in conferences:
             showticklabels = False
         fig = create_standings_chart(df_standings, conference, division, showticklabels)
         st.plotly_chart(fig, config={'staticPlot': True})
+
+st.markdown(
+    '<div style="display: flex; align-items: center;">'
+    '<div style="width: 15px; height: 15px; background-color: rgba(128, 128, 128, 0.1); margin-right: 5px;"></div>'
+    '<span>Playoff Cutoff</span>'
+    '</div>',
+    unsafe_allow_html=True
+)

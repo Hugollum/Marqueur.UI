@@ -21,6 +21,7 @@ def _load_stats_detail():
     df = conn.read(f"{s3_bucket}/{file_path}", input_format="csv", ttl=30, encoding="ISO-8859-1")
 
     df['team_logo'] = df['pooler_team'].apply(lambda x: team_images[x])
+    df['player_team_abbv'] = df['player_team']
     df['player_team'] = df['player_team'].apply(lambda x: team_images[x])
     df['players'] = df['position'].apply(lambda x: 1 if x != 'Team' else 0)
 
