@@ -12,6 +12,7 @@ from season_chart import create_fig as create_season_chart
 from position_charts import create_fig as create_position_chart
 from playoff_chart import create_fig as create_playoff_chart
 from standings_charts import create_fig as create_standings_chart
+from playoff_brackets import create_fig as create_playoff_brackets
 
 import sys
 sys.stdout.reconfigure(encoding="utf-8")
@@ -88,12 +89,12 @@ for position in positions:
     st.plotly_chart(fig, config={'staticPlot': True})
 
 
-st.markdown(f"**Playoff**")
+st.markdown(f"**Playoff Composition**")
 fig = create_playoff_chart(df_playoff, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 
 
-st.subheader("Standing", divider="gray")
+st.subheader("Standings", divider="gray")
 conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
 for conference, divisions in conferences:
     for division in divisions:
@@ -107,8 +108,11 @@ for conference, divisions in conferences:
 
 st.markdown(
     '<div style="display: flex; align-items: center;">'
-    '<div style="width: 15px; height: 15px; background-color: rgba(128, 128, 128, 0.1); margin-right: 5px;"></div>'
-    '<span>Playoff Cutoff</span>'
+    '<div style="width: 15px; height: 15px; background-color: #F0F2F6; margin-right: 5px;"></div>'
+    '<span>In Playoff</span>'
     '</div>',
     unsafe_allow_html=True
 )
+
+fig = create_playoff_brackets()
+st.plotly_chart(fig, config={'staticPlot': True})

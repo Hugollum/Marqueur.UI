@@ -26,9 +26,10 @@ def create_fig(df, conference, division, showticklabels=False):
     sizex, sizey = image_sizing_ratio(30.0, fig_width, fig_height, x_range, y_range)
     sizey + 1
 
+
     df = df[df['conference'] == conference]
     x_line = (df[df['wildcard_standing'] <= 2]['x'].min() + df[df['wildcard_standing'] > 2]['x'].max()) / 2
-    fig.add_vrect(x0=x_line, x1=x_range[0], fillcolor="gray", opacity=0.1, line_width=0, name="Playoff Cutoff")
+    fig.add_vrect(x0=x_line, x1=x_range[0], fillcolor="#F0F2F6", line_width=0, name="Playoff Cutoff", layer="below")
 
     # Loop over each unique pooler_name to generate a cubic spline curve
     for i, r in df[df['division']==division].sort_values(['wildcard_standing'], ascending=False).iterrows():

@@ -68,7 +68,7 @@ def create_fig(df, selected_poolers=None):
     steps = 3  # Step size for incrementing x * y
 
     # Calculate the number of lines to be drawn based on the range
-    num_lines = 7  # You can adjust this to your needs
+    num_lines = 10  # You can adjust this to your needs
 
     # Add decreasing diagonal grid lines where x * y = M + i * steps
     for i in range(num_lines):
@@ -89,8 +89,8 @@ def create_fig(df, selected_poolers=None):
     # Update layout
     fig.update_layout(showlegend=False,
                       margin=dict(t=0, l=0, b=0, r=0),
-                      xaxis=dict(visible=True, showgrid=False, zeroline=False, range=x_range, tickangle=30, title=dict(text="Average Points (Playoff)"), tickformat=".1f", fixedrange=True),  # Remove x-axis grid and labels
-                      yaxis=dict(visible=True, showgrid=False, zeroline=False, range=y_range, tickangle=30, title=dict(text="Player Count (Playoff)"), fixedrange=True) # Keep y-axis grid lines
+                      xaxis=dict(visible=True, showgrid=False, zeroline=False, range=x_range, tickangle=30, title=dict(text="Average Points"), tickformat=".1f", fixedrange=True),  # Remove x-axis grid and labels
+                      yaxis=dict(visible=True, showgrid=False, zeroline=False, range=y_range, tickangle=30, title=dict(text="Player Count"), fixedrange=True) # Keep y-axis grid lines
     )
 
     return fig
