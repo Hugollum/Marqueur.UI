@@ -1,8 +1,4 @@
 import requests
-endpoint = "https://api-web.nhle.com/v1/playoff-series/carousel/20242025/"
-response = requests.get(endpoint)
-data = response.json()
-
 import datetime as dt
 import pandas as pd
 import numpy as np
@@ -14,6 +10,8 @@ from util.style import team_colors, image_sizing_ratio
 
 
 def rounded_rectangle(x, y, width, height, radius, resolution=20):
+
+
     """Generate x, y coordinates for a perfectly rounded rectangle in Plotly."""
     left_x = x - width / 2
     right_x = x + width / 2
@@ -50,6 +48,10 @@ def rounded_rectangle(x, y, width, height, radius, resolution=20):
 
 
 def create_fig():
+    endpoint = "https://api-web.nhle.com/v1/playoff-series/carousel/20242025/"
+    response = requests.get(endpoint)
+    data = response.json()
+
     x_range = [-3.5, 3.5]
     y_range = [-1.9, 1.9]
     width, height = 0.8, 0.7
