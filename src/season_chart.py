@@ -2,7 +2,7 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import CubicSpline, PchipInterpolator, Akima1DInterpolator
 from plotly.graph_objects import Layout
 from PIL import Image
 
@@ -66,12 +66,23 @@ def create_fig(df, selected_poolers=None):
             trace_configs = [(df_pooler, 'solid', 5)]
 
         for df_part, line_dash, width in trace_configs:
-            # Create the cubic spline interpolation
-            cs = CubicSpline(df_part['x'], df_part['y'])
+            # Generate x_smooth values ensuring equal spacing within each segment
+            x_smooth = []
+            for i in range(len(df_part['x']) - 1):
+                x_segment = np.linspace(df_part['x'].iloc[i], df_part['x'].iloc[i + 1], 25, endpoint=False)
+                x_smooth.extend(x_segment)
 
-            # Generate smooth x values for the spline curve
-            x_smooth = np.linspace(df_part['x'].min(), df_part['x'].max(), 500)
-            y_smooth = cs(x_smooth)
+            x_smooth.append(df_part['x'].iloc[-1])  # Add last point to ensure inclusion
+
+            # Create the cubic spline
+            akima = Akima1DInterpolator(df_part['x'], df_part['y'])
+
+            # Generate corresponding y values
+            y_smooth = akima(x_smooth)
+
+            # Convert to NumPy arrays
+            x_smooth = np.array(x_smooth)
+            y_smooth = np.array(y_smooth)
 
             # Add the smooth cubic spline curve for the current pooler_name (no markers)
             fig.add_trace(go.Scatter(
