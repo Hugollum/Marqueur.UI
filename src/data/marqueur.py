@@ -14,19 +14,32 @@ _PROJECTIONS_CHECKBOX_DEFAULT = True
 s3_bucket = st.secrets["AWS_S3_BUCKET"]
 
 
+def format_name(name):
+    return re.sub(r"(\b\w)", lambda m: m.group(1).upper(), name.lower())
+
+
+@st.cache_data(ttl=300)
+def _load_player_injury():
+    file_path = "marqueur/player_injury.csv"
+    conn = st.connection(name='s3', type=FilesConnection)
+    df = conn.read(f"{s3_bucket}/{file_path}", input_format="csv", ttl=30, encoding="ISO-8859-1")
+    df['player_name'] = df['player_name'].str.upper()
+
+    return df
+
+
 @st.cache_data(ttl=300)
 def _load_stats_detail():
     file_path = "marqueur/stats_detail.csv"
     conn = st.connection(name='s3', type=FilesConnection)
     df = conn.read(f"{s3_bucket}/{file_path}", input_format="csv", ttl=30, encoding="ISO-8859-1")
+    df = pd.merge(df, _load_player_injury(), how='left', on='player_name')
 
+    df['season_ended'] = df['season_ended'].fillna(False)
     df['team_logo'] = df['pooler_team'].apply(lambda x: team_images[x])
     df['player_team_abbv'] = df['player_team']
     df['player_team'] = df['player_team'].apply(lambda x: team_images[x])
-    df['players'] = df['position'].apply(lambda x: 1 if x != 'Team' else 0)
-
-    def format_name(name):
-        return re.sub(r"(\b\w)", lambda m: m.group(1).upper(), name.lower())
+    df['players'] = df.apply(lambda x: 1 if x['position'] != 'Team' and not x['season_ended'] else 0, axis='columns')
     df['player_name'] = df['player_name'].apply(lambda x: format_name(x))
 
     return df

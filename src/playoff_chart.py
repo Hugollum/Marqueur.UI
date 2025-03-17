@@ -21,8 +21,8 @@ def create_fig(df, selected_poolers=None):
     else:
         df['selected'] = True
 
-    x_range = [0, 2]
-    y_range = [0, 13]
+    x_range = [0.0, 2.0]
+    y_range = [0.0, 13.0]
 
 
     fig_width = 800
@@ -73,9 +73,11 @@ def create_fig(df, selected_poolers=None):
     # Add decreasing diagonal grid lines where x * y = M + i * steps
     for i in range(num_lines):
         constant_value = M + i * steps
+        epsilon = 1e-10
 
         # Calculate y-values for each x in the range for the grid line
         x_values_grid = np.linspace(x_range[0], x_range[1], 100)
+        x_values_grid = np.where(x_values_grid == 0, epsilon, x_values_grid)
         y_values_grid = constant_value / x_values_grid
 
         # Add the grid line to the plot

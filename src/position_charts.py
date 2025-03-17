@@ -79,13 +79,11 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
         )
 
     # Update layout
-    fig.update_layout(        title=dict(
-            text=position
-        ),
-                      showlegend=False,
-                      margin=dict(t=0, l=0, b=0, r=0),
-                      xaxis=dict(visible=True, showticklabels=showticklabels, range=x_range, fixedrange=True),
-                      yaxis=dict(visible=True, showticklabels=False, showgrid=False, fixedrange=True, side="right", range=y_range)
+    fig.update_layout(
+      showlegend=False,
+      margin=dict(t=0, l=0, b=0, r=0),
+      xaxis=dict(visible=True, showticklabels=showticklabels, range=x_range, fixedrange=True),
+      yaxis=dict(visible=True, showticklabels=False, showgrid=False, fixedrange=True, side="right", range=y_range)
     )
 
     return fig
