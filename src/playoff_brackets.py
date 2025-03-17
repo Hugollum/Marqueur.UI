@@ -51,7 +51,7 @@ def rounded_rectangle(x, y, width, height, radius, resolution=20):
 
 def create_fig():
     x_range = [-3.5, 3.5]
-    y_range = [-2.5, 2.5]
+    y_range = [-1.9, 1.9]
     width, height = 0.8, 0.7
     radius = 0.025
 
@@ -63,7 +63,7 @@ def create_fig():
     ]
 
     fig_width = 800
-    fig_height = 500
+    fig_height = 400
     layout = Layout(
         plot_bgcolor='rgba(255,255,255,1)',
         width=fig_width,

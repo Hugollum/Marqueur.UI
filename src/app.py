@@ -51,8 +51,10 @@ df_summary = get_stats_summary()
 df_detail = get_stats_detail()
 df_roster = get_roster_stats()
 df_standings = get_standings()
+print(len(df_roster))
 df_playoff = pd.merge(df_standings, df_roster, left_on=['team'], right_on=['player_team_abbv'])
-df_playoff = df_playoff[df_playoff['wildcard_standing'] <= 2]
+print(len(df_playoff))
+df_playoff = df_playoff[(df_playoff['wildcard_standing'] <= 2) & (~df_playoff['season_ended'])]
 df_playoff = df_playoff[list(df_roster.columns)]
 
 st.subheader("Poolers", divider="gray")
@@ -117,7 +119,7 @@ st.markdown(
     '</div>',
     unsafe_allow_html=True
 )
-
+st.markdown(f"")
 st.markdown(f"##### Playoff")
 fig = create_playoff_brackets()
 st.plotly_chart(fig, config={'staticPlot': True})
