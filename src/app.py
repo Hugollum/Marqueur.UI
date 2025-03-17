@@ -63,6 +63,7 @@ with st.expander("Pooler roster", expanded=False):
     df_roster = df_roster[df_roster['pooler_name'] == pooler_name]
     render_roaster_df(df_roster)
 
+st.markdown(f"##### Leaderboard")
 summary_df_event = render_summary_df(df_summary)
 
 if summary_df_event.selection.rows:
@@ -74,6 +75,7 @@ render_projections_checkbox()
 fig = create_season_chart(df_detail, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 
+st.markdown(f"##### Pool Breakdown")
 st.markdown(f"**Game Played**")
 fig = create_position_chart(df_detail, "game_played", None, selected_poolers, True)
 st.plotly_chart(fig, config={'staticPlot': True})
@@ -89,12 +91,14 @@ for position in positions:
     st.plotly_chart(fig, config={'staticPlot': True})
 
 
-st.markdown(f"**Playoff Composition**")
+st.markdown(f"##### Playoff Composition")
 fig = create_playoff_chart(df_playoff, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 
 
 st.subheader("Standings", divider="gray")
+
+st.markdown(f"##### Regular Season")
 conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
 for conference, divisions in conferences:
     for division in divisions:
@@ -114,5 +118,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown(f"##### Playoff")
 fig = create_playoff_brackets()
 st.plotly_chart(fig, config={'staticPlot': True})

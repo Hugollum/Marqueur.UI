@@ -1,5 +1,5 @@
 import requests
-endpoint = "https://api-web.nhle.com/v1/playoff-series/carousel/20232024/"
+endpoint = "https://api-web.nhle.com/v1/playoff-series/carousel/20242025/"
 response = requests.get(endpoint)
 data = response.json()
 
