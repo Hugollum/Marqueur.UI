@@ -57,40 +57,48 @@ def create_fig(df, selected_poolers=None):
         team_color = team_colors[pooler_team]
         color = f"rgba({','.join([str(c) for c in team_color.primary.rgb])}, {str(a)})"
 
-        if not df_pooler[df_pooler['is_projection']].empty:
+        # Generate x_smooth values ensuring equal spacing within each segment
+        x_smooth = []
+        for i in range(len(df_pooler['x']) - 1):
+            x_segment = np.linspace(df_pooler['x'].iloc[i], df_pooler['x'].iloc[i + 1], 50, endpoint=False)
+            x_smooth.extend(x_segment)
+
+        x_smooth.append(df_pooler['x'].iloc[-1])  # Add last point to ensure inclusion
+
+        # Create the cubic spline
+        akima = Akima1DInterpolator(df_pooler['x'], df_pooler['y'])
+
+        # Generate corresponding y values
+        y_smooth = akima(x_smooth)
+
+        # Convert to NumPy arrays
+        x_smooth = np.array(x_smooth)
+        y_smooth = np.array(y_smooth)
+
+        # Split x_smooth and y_smooth into projected and non-projected
+        non_projected_mask = x_smooth <= max_day
+        x_non_projected, y_non_projected = x_smooth[non_projected_mask], y_smooth[non_projected_mask]
+        x_projected, y_projected = x_smooth[~non_projected_mask], y_smooth[~non_projected_mask]
+
+        # Define trace configurations
+        if len(x_projected):
             trace_configs = [
-                (df_pooler[~df_pooler['is_projection']], 'solid', 5),
-                (df_pooler[df_pooler['is_projection']], 'dash', 4)
+                ((x_non_projected, y_non_projected), 'solid', 5),
+                ((x_projected, y_projected), 'dash', 4)
             ]
         else:
-            trace_configs = [(df_pooler, 'solid', 5)]
+            trace_configs = [((x_non_projected, y_non_projected), 'solid', 5)]
 
-        for df_part, line_dash, width in trace_configs:
-            # Generate x_smooth values ensuring equal spacing within each segment
-            x_smooth = []
-            for i in range(len(df_part['x']) - 1):
-                x_segment = np.linspace(df_part['x'].iloc[i], df_part['x'].iloc[i + 1], 25, endpoint=False)
-                x_smooth.extend(x_segment)
-
-            x_smooth.append(df_part['x'].iloc[-1])  # Add last point to ensure inclusion
-
-            # Create the cubic spline
-            akima = Akima1DInterpolator(df_part['x'], df_part['y'])
-
-            # Generate corresponding y values
-            y_smooth = akima(x_smooth)
-
-            # Convert to NumPy arrays
-            x_smooth = np.array(x_smooth)
-            y_smooth = np.array(y_smooth)
+        for trace, style, width in trace_configs:
+            x, y = trace
 
             # Add the smooth cubic spline curve for the current pooler_name (no markers)
             fig.add_trace(go.Scatter(
-                x=x_smooth,
-                y=y_smooth,
+                x=x,
+                y=y,
                 mode='lines',
                 name=f'{pooler_name}',
-                line=dict(color=color, dash=line_dash, width=width),
+                line=dict(color=color, dash=style, width=width),
                 hovertemplate=f'{pooler_name}'
             ))
 

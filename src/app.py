@@ -51,9 +51,7 @@ df_summary = get_stats_summary()
 df_detail = get_stats_detail()
 df_roster = get_roster_stats()
 df_standings = get_standings()
-print(len(df_roster))
 df_playoff = pd.merge(df_standings, df_roster, left_on=['team'], right_on=['player_team_abbv'])
-print(len(df_playoff))
 df_playoff = df_playoff[(df_playoff['wildcard_standing'] <= 2) & (~df_playoff['season_ended'])]
 df_playoff = df_playoff[list(df_roster.columns)]
 
