@@ -6,7 +6,7 @@ from PIL import Image
 from util.style import team_colors, image_sizing_ratio
 
 
-def create_fig(df, x_column='total_points', position=None, selected_poolers=None, showticklabels=False):
+def create_fig(df, x_column='total_points', position=None, selected_poolers=None):
     # Filter data for max value_dt
     df["value_dt"] = pd.to_datetime(df["value_dt"])
     max_value_dt = df["value_dt"].max()
@@ -14,22 +14,19 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
     df = df.drop(columns=["value_dt"])
 
     if position is not None:
-        df_grouped = df.groupby(['pooler_name', 'pooler_team', 'position'])[x_column].sum().reset_index()
-        df = df_grouped[['pooler_name', 'pooler_team', 'position', x_column]]
-    else:
-        df_grouped = df.groupby(['pooler_name', 'pooler_team'])[x_column].sum().reset_index()
-        df = df_grouped[['pooler_name', 'pooler_team', x_column]]
+        df = df[df['position'] == position]
 
-    df = df.rename(columns={
-        x_column: 'x'
-    })
+
+    df = df.groupby(['pooler_name', 'pooler_team'])[x_column].sum().reset_index()
+    avg = df[x_column].mean()
+    std = df[x_column].std()
+    df['x'] = ((df[x_column]-avg)/std)
+    df = df[['pooler_name', 'pooler_team', 'x']]
+
     s = (df['x'].max() - df['x'].min()) * 0.1
-    x_range = [df['x'].min() - s, df['x'].max() + s]
+    x_range = [-3.1, 3.1]
     df['y'] = 0
     y_range = [-1,1]
-
-    if position is not None:
-        df = df[df['position'] == position]
 
     if selected_poolers:
         df['selected'] = df['pooler_name'].isin(selected_poolers)
@@ -37,7 +34,7 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
         df['selected'] = True
 
     fig_width = 800
-    fig_height = 90 if showticklabels else 60
+    fig_height = 60
     layout = Layout(
         plot_bgcolor='rgba(255,255,255,1)',
         width=fig_width,
@@ -46,6 +43,13 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
 
     sizex, sizey = image_sizing_ratio(30.0, fig_width, fig_height, x_range, y_range)
     sizey + 1
+
+    for x_vline, value in [(i, avg + i * std) for i in [-2, -1, 0, 1, 2]]:
+
+        fig.add_annotation(x=x_vline, y=-0.85, text="{:.0f}".format(round(value / 5) * 5),
+            showarrow=False,
+            opacity=1,
+        )
 
     # Loop over each unique pooler_name to generate a cubic spline curve
     for i, r in df.sort_values(['selected', 'y'], ascending=True).iterrows():
@@ -82,7 +86,7 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
     fig.update_layout(
       showlegend=False,
       margin=dict(t=0, l=0, b=0, r=0),
-      xaxis=dict(visible=True, showticklabels=showticklabels, range=x_range, fixedrange=True),
+      xaxis=dict(visible=True, showticklabels=False, range=x_range, fixedrange=True),
       yaxis=dict(visible=True, showticklabels=False, showgrid=False, fixedrange=True, side="right", range=y_range)
     )
 

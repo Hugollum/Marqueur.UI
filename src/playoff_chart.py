@@ -85,7 +85,7 @@ def create_fig(df, selected_poolers=None):
             x=x_values_grid,
             y=y_values_grid,
             mode="lines",
-            line=dict(color="rgba(230, 234, 241, 1)", width=1)  # Style it like a grid line
+            line=dict(color="#E6EAF1", width=1)  # Style it like a grid line
         ))
 
     # Update layout
