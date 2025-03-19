@@ -49,6 +49,7 @@ render_mulligan_checkbox()
 
 df_summary = get_stats_summary()
 df_detail = get_stats_detail()
+df_breakdown = df_detail[~df_detail['is_projection']]
 df_roster = get_roster_stats()
 df_standings = get_standings()
 df_playoff = pd.merge(df_standings, df_roster, left_on=['team'], right_on=['player_team_abbv'])
@@ -77,17 +78,13 @@ st.plotly_chart(fig, config={'staticPlot': True})
 
 st.markdown(f"##### Pool Breakdown")
 st.markdown(f"**Game Played**")
-fig = create_position_chart(df_detail, "game_played", None, selected_poolers, True)
+fig = create_position_chart(df_breakdown, "game_played", None, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 
 positions = ['Forward', 'Defender', 'Goalie', 'Team']
 for position in positions:
     st.markdown(f"**{position}**")
-    if position == positions[-1]:
-        showticklabels = True
-    else:
-        showticklabels = False
-    fig = create_position_chart(df_detail, 'total_points', position, selected_poolers, showticklabels)
+    fig = create_position_chart(df_breakdown, 'total_points', position, selected_poolers)
     st.plotly_chart(fig, config={'staticPlot': True})
 
 
