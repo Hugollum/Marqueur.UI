@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import plotly.graph_objects as go
 from plotly.graph_objects import Layout
 from PIL import Image
@@ -16,15 +17,16 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
     if position is not None:
         df = df[df['position'] == position]
 
-
     df = df.groupby(['pooler_name', 'pooler_team'])[x_column].sum().reset_index()
+    median = df[x_column].median()
     avg = df[x_column].mean()
     std = df[x_column].std()
-    df['x'] = ((df[x_column]-avg)/std)
+    df['x'] = df[x_column]-median
+    largest_gap = np.ceil(abs(df['x']).max() / 15) * 15
     df = df[['pooler_name', 'pooler_team', 'x']]
 
     s = (df['x'].max() - df['x'].min()) * 0.1
-    x_range = [-3.1, 3.1]
+    x_range = [-largest_gap*1.1, largest_gap*1.1]
     df['y'] = 0
     y_range = [-1,1]
 
@@ -44,9 +46,9 @@ def create_fig(df, x_column='total_points', position=None, selected_poolers=None
     sizex, sizey = image_sizing_ratio(30.0, fig_width, fig_height, x_range, y_range)
     sizey + 1
 
-    for x_vline, value in [(i, avg + i * std) for i in [-2, -1, 0, 1, 2]]:
+    for x_vline, value in [(largest_gap*i/3, largest_gap*i/3) for i in [-3, -2, -1, 0, 1, 2, 3]]:
 
-        fig.add_annotation(x=x_vline, y=-0.85, text="{:.0f}".format(round(value / 5) * 5),
+        fig.add_annotation(x=x_vline, y=-0.85, text=(f"{int(value):+}" if value != 0 else "0"),
             showarrow=False,
             opacity=1,
         )
