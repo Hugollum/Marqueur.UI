@@ -128,3 +128,27 @@ def get_standings():
         print(f"Error fetching data: {e}")
 
     return pd.DataFrame(standings)
+
+
+def get_playoff_team():
+    endpoint = "/v1/playoff-series/carousel/20242025/"
+    playoff_teams = set()
+
+    try:
+        response = requests.get(api + endpoint)
+        response.raise_for_status()
+
+        data = response.json()
+        for round in data['rounds']:
+            for serie in round['series']:
+                if 'winningTeamId' not in serie:
+                    for seed, sign in [('topSeed', 1), ('bottomSeed', -1)]:
+                        team = serie.get(seed, {}).get('abbrev')
+                        if team == 'TBD':
+                            continue
+                        playoff_teams.add(team)
+
+    except requests.RequestException as e:
+        print(f"Error fetching data: {e}")
+
+    return pd.DataFrame([{'team': team} for team in playoff_teams])

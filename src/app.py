@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 
 from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
-from data.nhl import get_standings
+from data.nhl import get_standings, get_playoff_team
+from util.config import season_start, season_end, playoff_start, today
 
 from live_games import render_score
 from progress_bar import render_progress_bar
@@ -52,8 +53,8 @@ df_detail = get_stats_detail()
 df_breakdown = df_detail[~df_detail['is_projection']]
 df_roster = get_roster_stats()
 df_standings = get_standings()
-df_playoff = pd.merge(df_standings, df_roster, left_on=['team'], right_on=['player_team_abbv'])
-df_playoff = df_playoff[(df_playoff['wildcard_standing'] <= 2) & (~df_playoff['season_ended'])]
+df_playoff_team = get_playoff_team()
+df_playoff = pd.merge(df_playoff_team, df_roster, left_on=['team'], right_on=['player_team_abbv'])
 df_playoff = df_playoff[list(df_roster.columns)]
 
 st.subheader("Poolers", divider="gray")
@@ -94,27 +95,37 @@ st.plotly_chart(fig, config={'staticPlot': True})
 
 
 st.subheader("Standings", divider="gray")
+def render_regular_season():
+    st.markdown(f"##### Regular Season")
+    conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
+    for conference, divisions in conferences:
+        for division in divisions:
+            st.markdown(f"**{division}**")
+            if division == 'Pacific':
+                showticklabels = True
+            else:
+                showticklabels = False
+            fig = create_standings_chart(df_standings, conference, division, showticklabels)
+            st.plotly_chart(fig, config={'staticPlot': True})
 
-st.markdown(f"##### Regular Season")
-conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
-for conference, divisions in conferences:
-    for division in divisions:
-        st.markdown(f"**{division}**")
-        if division == 'Pacific':
-            showticklabels = True
-        else:
-            showticklabels = False
-        fig = create_standings_chart(df_standings, conference, division, showticklabels)
-        st.plotly_chart(fig, config={'staticPlot': True})
+    st.markdown(
+        '<div style="display: flex; align-items: center;">'
+        '<div style="width: 15px; height: 15px; background-color: #F0F2F6; margin-right: 5px;"></div>'
+        '<span>In Playoff</span>'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
-st.markdown(
-    '<div style="display: flex; align-items: center;">'
-    '<div style="width: 15px; height: 15px; background-color: #F0F2F6; margin-right: 5px;"></div>'
-    '<span>In Playoff</span>'
-    '</div>',
-    unsafe_allow_html=True
-)
-st.markdown(f"")
-st.markdown(f"##### Playoff")
-fig = create_playoff_brackets()
-st.plotly_chart(fig, config={'staticPlot': True})
+def render_playoff_bracket():
+    st.markdown(f"##### Playoff")
+    fig = create_playoff_brackets()
+    st.plotly_chart(fig, config={'staticPlot': True})
+
+if today < playoff_start:
+    render_regular_season()
+    st.markdown(f"")
+    render_playoff_bracket()
+else:
+    render_playoff_bracket()
+    st.markdown(f"")
+    render_regular_season()

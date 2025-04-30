@@ -1,12 +1,8 @@
 import streamlit as st
-from datetime import datetime
+from util.config import season_start, season_end, playoff_start, today
 
 # Define the start, playoff, and end dates of the hockey season
-season_start = datetime(2024, 9, 30)  # TODO: Put in config file
-playoff_start = datetime(2025, 4, 17)  # TODO: Put in config file
-season_end = datetime(2025, 6, 30)  # TODO: Put in config file
 
-today = datetime.now()
 if today < season_start:
     progress_percent = 0
     playoff_percent = 0
