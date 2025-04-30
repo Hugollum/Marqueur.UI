@@ -10,8 +10,6 @@ from util.style import team_colors, image_sizing_ratio
 
 
 def rounded_rectangle(x, y, width, height, radius, resolution=20):
-
-
     """Generate x, y coordinates for a perfectly rounded rectangle in Plotly."""
     left_x = x - width / 2
     right_x = x + width / 2
@@ -143,13 +141,16 @@ def create_fig():
         fig.add_trace(go.Scatter(x=[x - width * 0.45, x + width * 0.45], y=[y, y], mode='lines', line=dict(color="rgba(230, 234, 241, 1)", width=1)))
 
 
-    i=0
     for round in data['rounds']:
         for serie in round['series']:
             for seed, sign in [('topSeed', 1), ('bottomSeed', -1)]:
+                series_letter = serie.get('seriesLetter')
+                i = ord(series_letter) - ord('A')
                 x, y = sorted_coordinates[i]
                 team_id = serie.get(seed, {}).get('id', 0)
                 team = serie.get(seed, {}).get('abbrev')
+                if team == 'TBD':
+                    continue
                 team_logo = Image.open(f"assets/img/teams/{team}.png")
                 team_color = team_colors[team]
 
@@ -185,8 +186,6 @@ def create_fig():
                     ),
                     opacity=a,
                 )
-
-            i += 1
 
     # Update layout
     fig.update_layout(showlegend=False,

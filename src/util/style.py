@@ -17,6 +17,7 @@ class TeamColor:
 
 team_colors = {
     'ANA': TeamColor('ANA', Color("#F47A38", (252, 76, 2)),		    Color("#B9975B", (185, 151, 91))),
+    'ARI': TeamColor('ARI', Color("#8C2633", (140, 38, 51)),		Color("#E2D6B5", (226, 214, 181))),
     'BOS': TeamColor('BOS', Color("#FFB81C", (252, 181, 20)),		Color("#000000", (17, 17, 17))),
     'BUF': TeamColor('BUF', Color("#003087", (0, 48, 135)),		    Color("#FFB81C", (255, 184, 28))),
     'CGY': TeamColor('CGY', Color("#D2001C", (210, 0, 28)),		    Color("#FAAF19", (250, 175, 25))),
