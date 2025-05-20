@@ -1,4 +1,5 @@
 import streamlit as st
+from PIL import Image
 import pandas as pd
 
 from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
@@ -18,6 +19,13 @@ from playoff_brackets import create_fig as create_playoff_brackets
 import sys
 sys.stdout.reconfigure(encoding="utf-8")
 
+
+im = Image.open("assets/img/favicon.ico")
+st.set_page_config(
+    page_title="flcdlp",
+    page_icon=im,
+    layout="wide",
+)
 
 st.markdown("""
         <script>
