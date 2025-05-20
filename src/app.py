@@ -17,15 +17,14 @@ from standings_charts import create_fig as create_standings_chart
 from playoff_brackets import create_fig as create_playoff_brackets
 
 import sys
-sys.stdout.reconfigure(encoding="utf-8")
 
-
-im = Image.open("assets/img/favicon.ico")
 st.set_page_config(
     page_title="flcdlp",
-    page_icon=im,
+    page_icon="assets/img/favicon.ico",
     layout="wide",
 )
+
+sys.stdout.reconfigure(encoding="utf-8")
 
 st.markdown("""
         <script>
