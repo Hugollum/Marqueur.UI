@@ -61,8 +61,9 @@ df_breakdown = df_detail[~df_detail['is_projection']]
 df_roster = get_roster_stats()
 df_standings = get_standings()
 df_playoff_team = get_playoff_team()
-df_playoff = pd.merge(df_playoff_team, df_roster, left_on=['team'], right_on=['player_team_abbv'])
-df_playoff = df_playoff[list(df_roster.columns)]
+df_playoff = pd.merge(df_roster, df_playoff_team, left_on=['player_team_abbv'], right_on=['team'], how='left', indicator=True)
+df_playoff['in_playoff'] = df_playoff['_merge'] == 'both'
+df_playoff = df_playoff[list(df_roster.columns) + ['in_playoff']]
 
 st.subheader("Poolers", divider="gray")
 with st.expander("Pooler roster", expanded=False):

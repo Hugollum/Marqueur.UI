@@ -10,12 +10,17 @@ from util.style import team_colors, image_sizing_ratio
 
 
 def create_fig(df, selected_poolers=None):
+    poolers = df[['pooler_name', 'pooler_team']].drop_duplicates()
+    df = df[df['in_playoff']]
     df_grouped = df.groupby(['pooler_name', 'pooler_team']).agg(num_players=('player_name', 'count'), avg_points=('average_points', 'mean')).reset_index()
     df = df_grouped[['pooler_name', 'pooler_team', 'num_players', 'avg_points']]
     df = df.rename(columns={
         'avg_points': 'x',
         'num_players': 'y',
     })
+    df = pd.merge(poolers, df, how='left', on=['pooler_name', 'pooler_team'])
+    df['y'] = df['y'].fillna(0.35)
+    df['x'] = df['x'].fillna(0.05)
     if selected_poolers:
         df['selected'] = df['pooler_name'].isin(selected_poolers)
     else:
