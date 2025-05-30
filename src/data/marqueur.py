@@ -8,7 +8,7 @@ from st_files_connection import FilesConnection
 from util.style import team_images
 
 _MULLIGAN_CHECKBOX_KEY = "mulligan_checkbox"
-_MULLIGAN_CHECKBOX_DEFAULT = True
+_MULLIGAN_CHECKBOX_DEFAULT = False
 _PROJECTIONS_CHECKBOX_KEY = "projections_checkbox"
 _PROJECTIONS_CHECKBOX_DEFAULT = True
 s3_bucket = st.secrets["AWS_S3_BUCKET"]

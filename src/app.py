@@ -53,7 +53,7 @@ st.markdown("""
 
 render_progress_bar()
 render_score()
-render_mulligan_checkbox()
+# render_mulligan_checkbox()
 
 df_summary = get_stats_summary()
 df_detail = get_stats_detail()
