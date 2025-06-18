@@ -4,7 +4,7 @@ column_order = ["rank", "team_logo", "pooler_name", "delta_game", "delta_points"
 column_config={
         "rank": st.column_config.NumberColumn(
             label="#",
-            help="Game played",
+            help="Position",
             step=1,
             format="%d",
         ),

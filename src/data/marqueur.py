@@ -109,7 +109,7 @@ def get_stats_summary():
     df['delta_average'] = df['delta_points'] / df['delta_game'].replace(0, np.nan)
     df = df.sort_values(by=["total_points"], ascending=False)
     df['point_deficit'] = df['total_points'] - max(df['total_points'])
-    df['rank'] = np.arange(len(df)) + 1
+    df['rank'] = df['total_points'].rank(method='min', ascending=False).astype(int)
 
     return df
 
