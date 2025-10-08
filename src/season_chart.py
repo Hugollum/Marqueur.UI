@@ -1,3 +1,4 @@
+import streamlit as st
 import datetime as dt
 import pandas as pd
 import numpy as np
@@ -11,7 +12,7 @@ from util.style import team_colors, image_sizing_ratio
 
 def create_fig(df, selected_poolers=None):
     df['value_dt'] = pd.to_datetime(df['value_dt'])
-    df['day'] = (df['value_dt'] - dt.datetime(2024, 9, 30)).dt.days
+    df['day'] = (df['value_dt'] - st.session_state.get('season_start')).dt.days
 
     max_day = df[~df['is_projection']]['day'].max()
     df_grouped = df.groupby(['day', 'pooler_name', 'pooler_team', 'is_projection'])['total_points'].sum().reset_index()

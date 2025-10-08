@@ -5,7 +5,7 @@ seasons = {
     '2025-2026': {
         'label': 2526,
         'years': '20252026',
-        'season_start_dt': datetime(2025, 10, 7),
+        'season_start_dt': datetime(2025, 9, 30),
         'playoff_start_dt': datetime(2026, 4, 16),
         'season_end_dt':  datetime(2026, 6, 30),
         'is_current': True,
