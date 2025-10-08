@@ -100,7 +100,11 @@ def get_score():
 
 
 def get_standings():
-    endpoint = "/v1/standings/now"
+    if st.session_state.get('is_current_season', True):
+        endpoint = "/v1/standings/now"
+    else:
+        endpoint = f"/v1/standings/{st.session_state.get('playoff_start').strftime("%Y-%m-%d")}"
+
     standings = None
 
     try:
@@ -131,7 +135,7 @@ def get_standings():
 
 
 def get_playoff_team():
-    endpoint = "/v1/playoff-series/carousel/20242025/"
+    endpoint = f"/v1/playoff-series/carousel/{st.session_state.get('season_years')}/"
     playoff_teams = set()
 
     try:

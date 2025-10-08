@@ -29,10 +29,11 @@ def _load_player_injury():
 
 
 @st.cache_data(ttl=300)
-def _load_stats_detail():
+def _load_stats_detail(season_label):
     file_path = "marqueur/stats_detail.csv"
     conn = st.connection(name='s3', type=FilesConnection)
     df = conn.read(f"{s3_bucket}/{file_path}", input_format="csv", ttl=30, encoding="ISO-8859-1")
+    df = df[df['season'] == season_label]
     df = pd.merge(df, _load_player_injury(), how='left', on='player_name')
 
     df['season_ended'] = df['season_ended'].fillna(False)
@@ -45,8 +46,8 @@ def _load_stats_detail():
     return df
 
 
-def get_stats_detail():
-    df = _load_stats_detail()
+def get_stats_detail(season_label):
+    df = _load_stats_detail(season_label)
 
     # Apply Mulligan
     if st.session_state.get(_MULLIGAN_CHECKBOX_KEY, _MULLIGAN_CHECKBOX_DEFAULT):
@@ -64,8 +65,8 @@ def get_stats_detail():
     return df
 
 
-def get_roster_stats():
-    df = get_stats_detail()
+def get_roster_stats(season_label):
+    df = get_stats_detail(season_label)
 
     # Filter out projections
     df = df[~df['is_projection']]
@@ -90,8 +91,8 @@ def get_roster_stats():
     return df
 
 
-def get_stats_summary():
-    df = get_stats_detail()
+def get_stats_summary(season_label):
+    df = get_stats_detail(season_label)
 
     # Filter out projections
     df = df[~df['is_projection']]

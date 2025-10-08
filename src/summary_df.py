@@ -80,7 +80,7 @@ column_config={
 
 def render_summary_df(df):
     return st.dataframe(df,
-                        height=598,
+                        height=int((len(df)+1)*35.2),
                         width=800,
                         hide_index=True,
                         column_config=column_config,
