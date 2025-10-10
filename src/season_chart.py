@@ -66,11 +66,7 @@ def create_fig(df, selected_poolers=None):
 
         x_smooth.append(df_pooler['x'].iloc[-1])  # Add last point to ensure inclusion
 
-        if len(df_pooler['x']) <= 3:
-            smoothing_f =CubicSpline(df_pooler['x'], df_pooler['y'])
-            print('a')
-        else:
-            smoothing_f = Akima1DInterpolator(df_pooler['x'], df_pooler['y'])
+        smoothing_f = PchipInterpolator(df_pooler['x'], df_pooler['y'])
 
         # Generate corresponding y values
         y_smooth = smoothing_f(x_smooth)
