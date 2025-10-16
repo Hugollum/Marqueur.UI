@@ -101,7 +101,13 @@ def create_fig(df, selected_poolers=None):
                 line=dict(color=color, dash=style, width=width),
                 hovertemplate=f'{pooler_name}'
             ))
-
+        steps = 10
+        for l in range(1, steps):
+            fig.add_trace(go.Scatter(x=[df_pooler['x'].iloc[-1]],
+                                     y=[df_pooler['y'].iloc[-1]],
+                                     mode='markers',
+                                     marker=dict(color=f"rgba(255,255,255, {1-l/steps})", size=2*l+20),
+                                     hoverinfo='none'))  # Set font color to match the marker
 
         fig.add_layout_image(
             dict(
