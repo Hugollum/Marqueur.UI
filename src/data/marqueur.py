@@ -59,7 +59,7 @@ def get_stats_detail(season_label):
         df = pd.concat([df_top_11, df_team])
 
     # Remove projections
-    if not st.session_state.get(_PROJECTIONS_CHECKBOX_KEY, _PROJECTIONS_CHECKBOX_KEY):
+    if not st.session_state.get(_PROJECTIONS_CHECKBOX_KEY, _PROJECTIONS_CHECKBOX_DEFAULT):
         df = df[~df['is_projection']]
 
     return df
