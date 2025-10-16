@@ -83,11 +83,11 @@ def create_fig(df, selected_poolers=None):
         # Define trace configurations
         if len(x_projected):
             trace_configs = [
-                ((x_non_projected, y_non_projected), 'solid', 5),
-                ((x_projected, y_projected), 'dash', 4)
+                ((x_non_projected, y_non_projected), 'solid', 3),
+                ((x_projected, y_projected), 'dash', 2)
             ]
         else:
-            trace_configs = [((x_non_projected, y_non_projected), 'solid', 5)]
+            trace_configs = [((x_non_projected, y_non_projected), 'solid', 3)]
 
         for trace, style, width in trace_configs:
             x, y = trace
