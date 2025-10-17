@@ -99,6 +99,11 @@ st.markdown(f"**Game Played**")
 fig = create_position_chart(df_breakdown, "game_played", None, selected_poolers)
 st.plotly_chart(fig, config={'staticPlot': True})
 
+if st.session_state['today'] < st.session_state['playoff_start']:
+    st.markdown(f"**Regular Games Remaining**")
+    fig = create_position_chart(df_breakdown, "regular_games_remaining", None, selected_poolers)
+    st.plotly_chart(fig, config={'staticPlot': True})
+
 positions = ['Forward', 'Defender', 'Goalie', 'Team']
 for position in positions:
     st.markdown(f"**{position}**")
