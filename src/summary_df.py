@@ -1,6 +1,6 @@
 import streamlit as st
 
-column_order = ["rank", "team_logo", "pooler_name", "delta_game", "delta_points", "game_played", "total_points", "point_deficit", "average_points", "injured", "hot", "cold", "players"]
+column_order = ["rank", "team_logo", "pooler_name", "scheduled", "delta_game", "delta_points", "game_played", "total_points", "point_deficit", "average_points", "injured", "hot", "cold", "players"]
 column_config={
         "rank": st.column_config.NumberColumn(
             label="#",
@@ -16,9 +16,15 @@ column_config={
             width="small",
             pinned=True,
         ),
-        "delta_game": st.column_config.NumberColumn(
+        "scheduled": st.column_config.NumberColumn(
             label="📆",
-            help="Playing today",
+            help="Scheduled to play",
+            step=1,
+            format="%d",
+        ),
+        "delta_game": st.column_config.NumberColumn(
+            label="⏱️",
+            help="Playing now or played yesterday",
             step=1,
             format="%d",
         ),
