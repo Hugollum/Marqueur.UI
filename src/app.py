@@ -13,6 +13,9 @@ from datetime import datetime, timedelta
 from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
 from data.nhl import get_standings, get_playoff_team
 
+from util.style import team_images
+from bs4 import BeautifulSoup
+
 from season_selector import render_season_selector
 from live_games import render_score
 from progress_bar import render_progress_bar
@@ -152,3 +155,18 @@ if st.session_state['today'] - st.session_state['season_start'] > timedelta(days
         render_playoff_bracket()
         st.markdown(f"")
         render_regular_season()
+
+with st.expander("Summary", expanded=False):
+    import re
+    file_path = 'summary.md'
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+    html = BeautifulSoup(content.replace('src="WPG"', f'src="{team_images.get('WPG')}"'), features="html.parser").prettify()
+    st.markdown(html, unsafe_allow_html=True)
