@@ -1,75 +1,85 @@
-### Standings
+#### Yesterday actions
+##### Summary
+It was a high-scoring night in the pool, with several managers putting up big numbers. Simon Bouchard had an explosive evening, racking up an impressive 16 points, largely thanks to multi-point nights from Mikhail Sergachev ![][UTA] and John Tavares ![][TOR]. Hugo Lessard and Steven Ricard weren't far behind, tying for second with 11 points each. Hugo's performance was highlighted by a massive 6-point game from Jack Hughes ![][NJD].
 
-Look at these standings, it's almost as sad as the fake news media. Steven Ricard is at the top with 107 points. He's winning, bigly. He's got some great players, the best players. Then you have Francis Béliveau, trying to keep up, but failing. And way down at the bottom, Keven Roberge with only 62 points. A total disaster! He picked a guy who's out until next year. What a loser.
+---
+##### Top performances
+- **Jack Hughes** ![][NJD] (6 pts) / *Hugo Lessard*
+- **Mikhail Sergachev** ![][UTA] (4 pts) / *Simon Bouchard*
+- **Adrian Kempe** ![][LAK] (3 pts) / *Hugo Lessard*
+- **John Tavares** ![][TOR] (3 pts) / *Simon Bouchard*
+- **Jesper Bratt** ![][NJD] (3 pts) / *Maxime Clermont*
+- **Sergei Bobrovsky** ![][FLA] (3 pts) / *Maxime Clermont*
+- **Darcy Kuemper** ![][LAK] (3 pts) / *Keven Roberge*
 
-1.  **Steven Ricard** (107 pts)
-2.  **Francis Béliveau** (100 pts)
-3.  **Hugo Lessard** (98 pts)
-4.  **Rafael Massicotte** (93 pts)
-5.  **Simon Bouchard** (91 pts)
-6.  **Maxime Clermont** (88 pts)
-7.  **Kevin Beaudry** (76 pts)
-8.  **Matthieu Levasseur** (70 pts)
-9.  **Keven Roberge** (62 pts)
-
-### 2025-10-21 summary
-
-Last night was okay. Some people scored. Hugo and Simon actually showed up, unlike Francis and Rafael who got ZERO points. Believe me, ZERO. They should be embarrassed. Hugo's Jack Hughes was tremendous, a real winner. Everyone else was mostly sleeping. Sad!
-
-***
-
-#### Top 5 performances
-
-These are the real performers. The best of the best. Everyone else is just not sending their best people.
-
-1.  **Jack Hughes** (Hugo Lessard (![WPG](https://github.com/Hugollum/Marqueur.UI/tree/main/assets/img/teams/small/WPG.png))) - 6 pts
-2.  **Mikhail Sergachev** (Simon Bouchard) - 4 pts
-3.  **John Tavares** (Simon Bouchard) - 3 pts
-4.  **Jesper Bratt** (Maxime Clermont) - 3 pts
-5.  **Adrian Kempe** (Hugo Lessard) - 3 pts
-*(...and some other guys with 3 points, but these are the ones that matter.)*
-
-***
-
-#### Pooler performance
-
-Some people did great, others were a disgrace. Look at Hugo's average, fantastic! Then you have Matthieu, Francis, and Rafael... pathetic numbers. They're bringing the average down, folks.
-
-| Pooler | Average Points | Breakdown |
-| :--- | :--- | :--- |
-| **Hugo Lessard** | **2.20** | Jack Hughes (6), Adrian Kempe (3), Cale Makar (2) |
-| **Simon Bouchard** | **2.00** | Mikhail Sergachev (4), John Tavares (3), a bunch of guys with 1 or 2 pts |
-| **Maxime Clermont** | **1.50** | Jesper Bratt (3), Sergei Bobrovsky (3), some low-energy 1-point guys |
-| **Keven Roberge** | **1.40** | Darcy Kuemper (3), Thomas Chabot (2), Colorado Avalanche (1), John Carlson (1) |
-| **Steven Ricard** | **1.38** | Just a lot of people with 1 or 2 points. Quantity over quality? We'll see. |
-| **Kevin Beaudry** | **1.00** | All his players scored 1 or 2 points. Perfectly average. Boring! |
-| **Matthieu Levasseur** | **0.40** | Elias Pettersson (1), Luke Hughes (1). Very weak performance. |
-| **Francis Béliveau** | **0.00** | Jackson Lacombe (0), Tim Stutzle (0). A total goose egg. Fired! |
-| **Rafael Massicotte** | **0.00** | Scored nothing. A complete lightweight. Get him out of here! |
-
-***
-
-#### Who plays tonight
-
-Francis and Matthieu are loading up tonight with 6 players each. They're desperate, trying to make a comeback. Others, like Kevin and Steven, only have one player. Are they even trying? They're probably on vacation. Low energy!
-
-*   **Lots of action:** Francis Béliveau (6), Matthieu Levasseur (6)
-*   **Some action:** Rafael Massicotte (4), Maxime Clermont (3)
-*   **Barely trying:** Simon Bouchard (2), Hugo Lessard (2)
-*   **Sleeping:** Kevin Beaudry (1), Keven Roberge (1), Steven Ricard (1)
-
-### Injury list
-
-Some of these teams are a complete mess, just like a poorly run country. You have guys out for months! Keven Roberge picked a player, Aleksander Barkov, who is out until practically NEXT SEASON. What a terrible, terrible deal. Bad management!
-
-| Pooler | Player | Injury | Return Date |
+---
+| Pooler | Points | Avg Points | Breakdown |
 | :--- | :--- | :--- | :--- |
-| **Francis Béliveau** | Pyotr Kochetkov | LOWER BODY | 2025-10-25 |
-| **Hugo Lessard** | Noah Hanifin | UNSPECIFIED | 2025-10-25 |
-| **Keven Roberge** | **Aleksander Barkov** | **KNEE** | **2026-04-26** |
-| | Nikita Kucherov | SICK | 2025-10-25 |
-| | Matt Duchene | UPPER BODY | 2025-10-23 |
-| **Maxime Clermont** | Shayne Gostisbehere| LOWER BODY | 2025-10-28 |
-| | Brandon Montour | PERSONAL | 2025-10-25 |
-| **Rafael Massicotte** | **Brady Tkachuk** | **THUMB** | **2025-12-13** |
-| **Simon Bouchard** | Adin Hill | LOWER BODY | 2025-10-25 |
+| **Simon Bouchard** | 16 | 1.78 | Sergachev ![][UTA] **(4)**, Tavares ![][TOR] **(3)**, Keller ![][UTA] **(2)**, Oilers ![][EDM] **(2)**, Forsberg ![][NSH] **(2)**, Crosby ![][PIT] **(2)**, Bouchard ![][EDM] **(1)** |
+| **Hugo Lessard** | 11 | 2.20 | Hughes ![][NJD] **(6)**, Kempe ![][LAK] **(3)**, Makar ![][COL] **(2)** |
+| **Steven Ricard** | 11 | 1.22 | Pastrnak ![][BOS] **(2)**, Chychrun ![][WSH] **(2)**, Capitals ![][WSH] **(2)**, Nylander ![][TOR] **(2)**, Batherson ![][OTT] **(1)**, Strome ![][WSH] **(1)**, Josi ![][NSH] **(1)** |
+| **Maxime Clermont** | 9 | 1.50 | Bratt ![][NJD] **(3)**, Bobrovsky ![][FLA] **(3)**, Kyrou ![][STL] **(1)**, Marchenko ![][CBJ] **(1)**, Draisaitl ![][EDM] **(1)** |
+| **Kevin Beaudry** | 8 | 0.89 | Mcdavid ![][EDM] **(2)**, Panthers ![][FLA] **(2)**, Necas ![][COL] **(2)**, Ovechkin ![][WSH] **(1)**, Thomas ![][STL] **(1)** |
+| **Keven Roberge** | 7 | 1.40 | Kuemper ![][LAK] **(3)**, Chabot ![][OTT] **(2)**, Avalanche ![][COL] **(1)**, Carlson ![][WSH] **(1)** |
+| **Matthieu Levasseur** | 2 | 0.40 | Pettersson ![][VAN] **(1)**, Hughes ![][NJD] **(1)** |
+| **Francis BÃ©liveau** | 0 | 0.00 | |
+| **Rafael Massicotte** | 0 | 0.00 | |
+
+---
+#### Injuries
+| Pooler | Player | Injury | Estimated Return Date |
+| :--- | :--- | :--- | :--- |
+| Francis BÃ©liveau | Pyotr Kochetkov ![][CAR] | Lower Body | 2025-10-25 |
+| Hugo Lessard | Noah Hanifin ![][VGK] | Undisclosed | 2025-10-25 |
+| Keven Roberge | **Aleksander Barkov** ![][FLA] | **Knee** | 2026-04-26 |
+| Keven Roberge | Nikita Kucherov ![][TBL] | Illness | 2025-10-25 |
+| Keven Roberge | Matt Duchene ![][DAL] | Upper Body | 2025-10-23 |
+| Maxime Clermont | Shayne Gostisbehere ![][CAR] | Lower Body | 2025-10-28 |
+| Maxime Clermont | Brandon Montour ![][SEA] | Personal | 2025-10-25 |
+| Rafael Massicotte | **Brady Tkachuk** ![][OTT] | **Thumb** | 2025-12-13 |
+| Simon Bouchard | Adin Hill ![][VGK] | Lower Body | 2025-10-25 |
+
+---
+#### Who's playing today?
+- **Francis BÃ©liveau (6):** Faber ![][MIN], Larkin ![][DET], Demidov ![][MTL], Kaprizov ![][MIN], Canadiens ![][MTL], Dahlin ![][BUF]
+- **Matthieu Levasseur (5):** Slafkovsky ![][MTL], Hutson ![][MTL], Hughes ![][NJD], Montembeault ![][MTL], Thompson ![][BUF]
+- **Rafael Massicotte (4):** Debrincat ![][DET], Caufield ![][MTL], Hamilton ![][NJD], Hischier ![][NJD]
+- **Maxime Clermont (3):** Tuch ![][BUF], Bratt ![][NJD], Seider ![][DET]
+- **Hugo Lessard (2):** Hughes ![][NJD], Kadri ![][CGY]
+- **Simon Bouchard (2):** Raymond ![][DET], Suzuki ![][MTL]
+- **Kevin Beaudry (1):** Dobson ![][MTL]
+- **Keven Roberge (1):** Weegar ![][CGY]
+
+[ANA]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/ANA.png?raw=true
+[ARI]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/ARI.png?raw=true
+[BOS]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/BOS.png?raw=true
+[BUF]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/BUF.png?raw=true
+[CAR]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/CAR.png?raw=true
+[CBJ]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/CBJ.png?raw=true
+[CGY]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/CGY.png?raw=true
+[CHI]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/CHI.png?raw=true
+[COL]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/COL.png?raw=true
+[DAL]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/DAL.png?raw=true
+[DET]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/DET.png?raw=true
+[EDM]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/EDM.png?raw=true
+[FLA]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/FLA.png?raw=true
+[LAK]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/LAK.png?raw=true
+[MIN]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/MIN.png?raw=true
+[MTL]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/MTL.png?raw=true
+[NJD]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/NJD.png?raw=true
+[NSH]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/NSH.png?raw=true
+[NYI]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/NYI.png?raw=true
+[NYR]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/NYR.png?raw=true
+[OTT]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/OTT.png?raw=true
+[PHI]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/PHI.png?raw=true
+[PIT]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/PIT.png?raw=true
+[SEA]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/SEA.png?raw=true
+[SJS]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/SJS.png?raw=true
+[STL]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/STL.png?raw=true
+[TBL]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/TBL.png?raw=true
+[TOR]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/TOR.png?raw=true
+[UTA]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/UTA.png?raw=true
+[VAN]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/VAN.png?raw=true
+[VGK]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/VGK.png?raw=true
+[WPG]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/WPG.png?raw=true
+[WSH]: https://github.com/Hugollum/Marqueur.UI/blob/main/assets/img/teams/small/WSH.png?raw=true

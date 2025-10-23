@@ -1,5 +1,7 @@
 import streamlit as st
 
+import playoff_brackets
+
 st.set_page_config(
     page_title="flcdlp",
     page_icon="assets/img/favicon.ico",
@@ -54,13 +56,9 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-# Title of the Streamlit app
-#st.title("")
 render_season_selector()
 render_progress_bar()
 render_score()
-
-# render_mulligan_checkbox()
 
 df_summary = get_stats_summary(st.session_state.get('season_label'))
 df_detail = get_stats_detail(st.session_state.get('season_label'))
@@ -77,87 +75,93 @@ else:
     df_playoff['in_playoff'] = False
 
 
-st.subheader("Poolers", divider="gray")
-with st.expander("Pooler roster", expanded=False):
-    col, _, _ = st.columns(3)
-    with col:
-        pooler_name = st.selectbox('Pooler', options=df_summary['pooler_name'].drop_duplicates())
-    df_roster = df_roster[df_roster['pooler_name'] == pooler_name]
-    render_roaster_df(df_roster)
+overview, headlines  = st.tabs(
+    ["📋 Overview", "📰 Headlines"]
+)
 
-st.markdown(f"##### Leaderboard")
-summary_df_event = render_summary_df(df_summary)
+with overview:
+    st.subheader("📋 Overview", divider="gray")
+    with st.expander("Pooler roster", expanded=False):
+        col, _, _ = st.columns(3)
+        with col:
+            pooler_name = st.selectbox('Pooler', options=df_summary['pooler_name'].drop_duplicates())
+        df_roster = df_roster[df_roster['pooler_name'] == pooler_name]
+        render_roaster_df(df_roster)
 
-if summary_df_event.selection.rows:
-    selected_poolers = df_summary.iloc[summary_df_event.selection.rows]['pooler_name'].tolist()
-else:
-    selected_poolers = None
+    st.markdown(f"##### Leaderboard")
+    summary_df_event = render_summary_df(df_summary)
 
-render_projections_checkbox()
-fig = create_season_chart(df_detail, selected_poolers)
-st.plotly_chart(fig, config={'staticPlot': True})
+    if summary_df_event.selection.rows:
+        selected_poolers = df_summary.iloc[summary_df_event.selection.rows]['pooler_name'].tolist()
+    else:
+        selected_poolers = None
 
-st.markdown(f"##### Pool Breakdown")
-st.markdown(f"**Game Played**")
-fig = create_position_chart(df_breakdown, "game_played", None, selected_poolers)
-st.plotly_chart(fig, config={'staticPlot': True})
-
-if st.session_state['today'] < st.session_state['playoff_start']:
-    st.markdown(f"**Regular Games Remaining**")
-    fig = create_position_chart(df_breakdown, "regular_games_remaining", None, selected_poolers)
+    render_projections_checkbox()
+    fig = create_season_chart(df_detail, selected_poolers)
     st.plotly_chart(fig, config={'staticPlot': True})
 
-positions = ['Forward', 'Defender', 'Goalie', 'Team']
-for position in positions:
-    st.markdown(f"**{position}**")
-    fig = create_position_chart(df_breakdown, 'total_points', position, selected_poolers)
+    st.markdown(f"##### Pool Breakdown")
+    st.markdown(f"**Game Played**")
+    fig = create_position_chart(df_breakdown, "game_played", None, selected_poolers)
     st.plotly_chart(fig, config={'staticPlot': True})
-
-if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=60) and st.session_state['today'] < st.session_state['season_end']:
-    st.markdown(f"##### Playoff Composition")
-    fig = create_playoff_chart(df_playoff, selected_poolers)
-    st.plotly_chart(fig, config={'staticPlot': True})
-
-
-if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=60):
-    st.subheader("Standings", divider="gray")
-    def render_regular_season():
-        st.markdown(f"##### Regular Season")
-        conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
-        for conference, divisions in conferences:
-            for division in divisions:
-                st.markdown(f"**{division}**")
-                if division == 'Pacific':
-                    showticklabels = True
-                else:
-                    showticklabels = False
-                fig = create_standings_chart(df_standings, conference, division, showticklabels)
-                st.plotly_chart(fig, config={'staticPlot': True})
-
-        st.markdown(
-            '<div style="display: flex; align-items: center;">'
-            '<div style="width: 15px; height: 15px; background-color: #F0F2F6; margin-right: 5px;"></div>'
-            '<span>In Playoff</span>'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-    def render_playoff_bracket():
-        st.markdown(f"##### Playoff")
-        fig = create_playoff_brackets()
-        st.plotly_chart(fig, config={'staticPlot': True})
 
     if st.session_state['today'] < st.session_state['playoff_start']:
-        render_regular_season()
-        st.markdown(f"")
-        render_playoff_bracket()
-    else:
-        render_playoff_bracket()
-        st.markdown(f"")
-        render_regular_season()
+        st.markdown(f"**Regular Games Remaining**")
+        fig = create_position_chart(df_breakdown, "regular_games_remaining", None, selected_poolers)
+        st.plotly_chart(fig, config={'staticPlot': True})
 
-with st.expander("Summary", expanded=False):
-    import re
+    positions = ['Forward', 'Defender', 'Goalie', 'Team']
+    for position in positions:
+        st.markdown(f"**{position}**")
+        fig = create_position_chart(df_breakdown, 'total_points', position, selected_poolers)
+        st.plotly_chart(fig, config={'staticPlot': True})
+
+    if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=60) and st.session_state['today'] < st.session_state['season_end']:
+        st.markdown(f"##### Playoff Composition")
+        fig = create_playoff_chart(df_playoff, selected_poolers)
+        st.plotly_chart(fig, config={'staticPlot': True})
+
+
+    if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=60):
+        st.subheader("Standings", divider="gray")
+        def render_regular_season():
+            st.markdown(f"##### Regular Season")
+            conferences = [('Eastern', ['Atlantic', 'Metropolitan']), ('Western', ['Central', 'Pacific'])]
+            for conference, divisions in conferences:
+                for division in divisions:
+                    st.markdown(f"**{division}**")
+                    if division == 'Pacific':
+                        showticklabels = True
+                    else:
+                        showticklabels = False
+                    fig = create_standings_chart(df_standings, conference, division, showticklabels)
+                    st.plotly_chart(fig, config={'staticPlot': True})
+
+            st.markdown(
+                '<div style="display: flex; align-items: center;">'
+                '<div style="width: 15px; height: 15px; background-color: #F0F2F6; margin-right: 5px;"></div>'
+                '<span>In Playoff</span>'
+                '</div>',
+                unsafe_allow_html=True
+            )
+
+        def render_playoff_bracket():
+            st.markdown(f"##### Playoff")
+            fig = create_playoff_brackets()
+            st.plotly_chart(fig, config={'staticPlot': True})
+
+        if st.session_state['today'] < st.session_state['playoff_start']:
+            render_regular_season()
+            st.markdown(f"")
+            render_playoff_bracket()
+        else:
+            render_playoff_bracket()
+            st.markdown(f"")
+            render_regular_season()
+
+
+with headlines:
+    st.subheader("📰 Headlines", divider="gray")
     file_path = 'summary.md'
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -168,5 +172,4 @@ with st.expander("Summary", expanded=False):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-    html = BeautifulSoup(content.replace('src="WPG"', f'src="{team_images.get('WPG')}"'), features="html.parser").prettify()
-    st.markdown(html, unsafe_allow_html=True)
+    st.markdown(content, unsafe_allow_html=True)
