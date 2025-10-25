@@ -1,7 +1,5 @@
 import streamlit as st
 
-import playoff_brackets
-
 st.set_page_config(
     page_title="flcdlp",
     page_icon="assets/img/favicon.ico",
@@ -12,7 +10,7 @@ from PIL import Image
 import pandas as pd
 from datetime import datetime, timedelta
 
-from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary
+from data.marqueur import render_mulligan_checkbox, render_projections_checkbox, get_stats_detail, get_roster_stats, get_stats_summary, get_headlines
 from data.nhl import get_standings, get_playoff_team
 
 from util.style import team_images
@@ -162,14 +160,6 @@ with overview:
 
 with headlines:
     st.subheader("📰 Headlines", divider="gray")
-    file_path = 'summary.md'
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-
-    except FileNotFoundError:
-        print(f"Error: The file '{file_path}' was not found.")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    content = get_headlines()
 
     st.markdown(content, unsafe_allow_html=True)
