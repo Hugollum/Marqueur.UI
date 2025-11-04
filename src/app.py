@@ -64,9 +64,13 @@ df_breakdown = df_detail[~df_detail['is_projection']]
 df_roster = get_roster_stats(st.session_state.get('season_label'))
 df_standings = get_standings()
 df_playoff_team = get_playoff_team()
-if not df_playoff_team.empty:
+if st.session_state['today'] >= st.session_state['playoff_start'] and not df_playoff_team.empty:
     df_playoff = pd.merge(df_roster, df_playoff_team, left_on=['player_team_abbv'], right_on=['team'], how='left', indicator=True)
     df_playoff['in_playoff'] = df_playoff['_merge'] == 'both'
+    df_playoff = df_playoff[list(df_roster.columns) + ['in_playoff']]
+elif not df_standings.empty:
+    df_playoff = pd.merge(df_roster, df_standings, left_on=['player_team_abbv'], right_on=['team'], how='left', indicator=True)
+    df_playoff['in_playoff'] = df_playoff['conference_standing'] <= 8
     df_playoff = df_playoff[list(df_roster.columns) + ['in_playoff']]
 else:
     df_playoff = df_roster.copy()
@@ -114,13 +118,14 @@ with overview:
         fig = create_position_chart(df_breakdown, 'total_points', position, selected_poolers)
         st.plotly_chart(fig, config={'staticPlot': True})
 
-    if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=60) and st.session_state['today'] < st.session_state['season_end']:
+    if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=21) and st.session_state['today'] < st.session_state['season_end']:
+        st.markdown(f"")
         st.markdown(f"##### Playoff Composition")
         fig = create_playoff_chart(df_playoff, selected_poolers)
         st.plotly_chart(fig, config={'staticPlot': True})
 
 
-    if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=60):
+    if st.session_state['today'] - st.session_state['season_start'] > timedelta(days=21):
         st.subheader("Standings", divider="gray")
         def render_regular_season():
             st.markdown(f"##### Regular Season")
@@ -148,15 +153,16 @@ with overview:
             fig = create_playoff_brackets()
             st.plotly_chart(fig, config={'staticPlot': True})
 
-        if st.session_state['today'] < st.session_state['playoff_start']:
+        if st.session_state['today'] >= st.session_state['playoff_start']:
+            render_playoff_bracket()
+            st.markdown(f"")
+            render_regular_season()
+        elif st.session_state['today'] + timedelta(days=60) >= st.session_state['playoff_start']:
             render_regular_season()
             st.markdown(f"")
             render_playoff_bracket()
         else:
-            render_playoff_bracket()
-            st.markdown(f"")
             render_regular_season()
-
 
 with headlines:
     st.subheader("📰 Headlines", divider="gray")
