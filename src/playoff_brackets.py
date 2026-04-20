@@ -45,8 +45,8 @@ def rounded_rectangle(x, y, width, height, radius, resolution=20):
     return zip(*points)  # Separate x and y coordinates
 
 
-def create_fig():
-    endpoint = f"https://api-web.nhle.com/v1/playoff-series/carousel/{st.session_state.get('season_years')}/"
+def create_fig(season_years):
+    endpoint = f"https://api-web.nhle.com/v1/playoff-series/carousel/{season_years}/"
     response = requests.get(endpoint)
     data = response.json()
 
