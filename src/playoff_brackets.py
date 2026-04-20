@@ -46,7 +46,7 @@ def rounded_rectangle(x, y, width, height, radius, resolution=20):
 
 
 def create_fig():
-    endpoint = "https://api-web.nhle.com/v1/playoff-series/carousel/20242025/"
+    endpoint = f"https://api-web.nhle.com/v1/playoff-series/carousel/{st.session_state.get('season_years')}/"
     response = requests.get(endpoint)
     data = response.json()
 
