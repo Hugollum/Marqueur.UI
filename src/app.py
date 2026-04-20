@@ -150,7 +150,7 @@ with overview:
 
         def render_playoff_bracket():
             st.markdown(f"##### Playoff")
-            fig = create_playoff_brackets()
+            fig = create_playoff_brackets(st.session_state['season_years'])
             st.plotly_chart(fig, config={'staticPlot': True})
 
         if st.session_state['today'] >= st.session_state['playoff_start']:
